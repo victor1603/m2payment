@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <liqpaymagento_liqpay>
+                <active>0</active>
+                <sandbox>0</sandbox>
+                <sandbox_order_surfix>lqp_</sandbox_order_surfix>
+                <model>CodeCustom\Payments\Model\LiqPay</model>
+                <payment_action>authorize_capture</payment_action>
+                <title>LiqPay</title>
+                <private_key backend_model="Magento\Config\Model\Config\Backend\Encrypted"/>
+                <allowspecific>0</allowspecific>
+                <description><![CDATA[Purchase of goods in the store. Order #{order_id}.]]></description>
+                <security_check>1</security_check>
+            </liqpaymagento_liqpay>
+            <parts_payment>
+                <active>0</active>
+                <model>CodeCustom\Payments\Model\PbPp</model>
+                <order_status>pending</order_status>
+                <title>Parts Payment</title>
+                <checkout_error>Parts Payment is not available for this product</checkout_error>
+                <min_price>500</min_price>
+                <store_id></store_id>
+                <scheme></scheme>
+                <recipient_id></recipient_id>
+                <merchant_type>PP</merchant_type>
+            </parts_payment>
+            <instant_payment>
+                <active>0</active>
+                <model>CodeCustom\Payments\Model\PbIp</model>
+                <order_status>pending</order_status>
+                <title>Instant Installment</title>
+                <checkout_error>Instant is not available for this product</checkout_error>
+                <min_product_price>500</min_product_price>
+                <store_id></store_id>
+                <scheme></scheme>
+                <recipient_id></recipient_id>
+                <merchant_type>II</merchant_type>
+            </instant_payment>
+        </payment>
+    </default>
+</config>
