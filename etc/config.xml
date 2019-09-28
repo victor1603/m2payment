@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <payment>
-            <liqpaymagento_liqpay>
+            <liqpay_payment>
                 <active>0</active>
                 <sandbox>0</sandbox>
                 <sandbox_order_surfix>lqp_</sandbox_order_surfix>
@@ -13,31 +13,31 @@
                 <allowspecific>0</allowspecific>
                 <description><![CDATA[Purchase of goods in the store. Order #{order_id}.]]></description>
                 <security_check>1</security_check>
-            </liqpaymagento_liqpay>
+            </liqpay_payment>
             <parts_payment>
                 <active>0</active>
-                <model>CodeCustom\Payments\Model\PbPp</model>
+                <model>CodeCustom\Payments\Model\PbPartsPayment</model>
                 <order_status>pending</order_status>
                 <title>Parts Payment</title>
                 <checkout_error>Parts Payment is not available for this product</checkout_error>
-                <min_price>500</min_price>
+                <min_price>0</min_price>
                 <store_id></store_id>
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>PP</merchant_type>
             </parts_payment>
-            <instant_payment>
+            <instant_installment>
                 <active>0</active>
-                <model>CodeCustom\Payments\Model\PbIp</model>
+                <model>CodeCustom\Payments\Model\PbInstantInstallment</model>
                 <order_status>pending</order_status>
                 <title>Instant Installment</title>
                 <checkout_error>Instant is not available for this product</checkout_error>
-                <min_product_price>500</min_product_price>
+                <min_price>0</min_price>
                 <store_id></store_id>
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>II</merchant_type>
-            </instant_payment>
+            </instant_installment>
         </payment>
     </default>
 </config>

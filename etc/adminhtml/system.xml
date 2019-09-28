@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
     <system>
         <section id="payment">
-            <group id="liqpaymagento_liqpay" translate="label" type="text" sortOrder="50" showInDefault="1"
+            <group id="liqpay_payment" translate="label" type="text" sortOrder="50" showInDefault="1"
                    showInWebsite="1" showInStore="1">
                 <label>LiqPay</label>
                 <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
@@ -120,7 +120,7 @@
                     <label>Redirect URL</label>
                 </field>
             </group>
-            <group id="instant_payment" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="instant_installment" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Instant Installment Payment</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Enabled</label>
@@ -137,7 +137,7 @@
                 <field id="checkout_error" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Checkout error message</label>
                 </field>
-                <field id="min_product_price" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="min_price" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Min product price</label>
                     <validate>validate-number</validate>
                 </field>

@@ -1,0 +1,134 @@
+<div if="!isVisible()" class="payment-method payment_half-part payment-group-credit-container hide"><span class="credit-error-msg" data-bind="text: getErrorMessage()"></span></div>
+<div if="isVisible()" class="payment-method half-part payment-group-credit-container hide" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               class="radio"
+               data-bind="attr: {'id': getCode(), 'name' : 'payment[method]'},
+               value: getCode(), checked: isChecked,
+               click: selectPaymentMethod,
+               visible: isRadioButtonVisible(),"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content paypart-half">
+
+        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_part_payment_term'}">
+            <div class="field" >
+                <div class="control" >
+                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[part_payment_term]" class="input-text" value=""
+                           data-bind="attr: {
+                                    id: getCode() + '_part_payment_term',
+                                    title: $t('Account Owner'),
+                                    placeholder: $t('Email'),
+                                    'data-container': getCode() + '-part_payment_term',
+                                    'data-validate': JSON.stringify({'required':true})},
+                                    valueUpdate: 'keyup' "/>
+
+                </div>
+            </div>
+        </fieldset>
+        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_part_payment_price'}">
+            <div class="field _required">
+                <div class="control">
+                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[part_payment_price]" class="input-text" value=""
+                           data-bind="attr: {
+                                    id: getCode() + '_part_payment_price',
+                                    'data-container': getCode() + '-part_payment_price',
+                                    'data-validate': JSON.stringify({'required':true})},
+                                    valueUpdate: 'keyup' "/>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())
+                        "
+                        disabled>
+                    <span data-bind="text: $t('Place Order')"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="checkout-paypart-container">
+            <div class="item-credit">
+                <div class="fields-slider pay-half-slider">
+                    <div id="half-part-collabsible">
+                        <div data-role="collapsible">
+                            <div data-role="trigger" class="header-title-slider">
+                                <div class="image-credit">
+                                    <svg width="29" height="25" viewBox="0 0 29 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16.5 25C23.4036 25 29 19.4036 29 12.5C29 5.59644 23.4036 0 16.5 0C9.59644 0 4 5.59644 4 12.5C4 19.4036 9.59644 25 16.5 25Z" fill="#FFDE00"/>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.3576 23.6719L16.0002 12.5L4.35712 1.32764C-1.45245 7.6333 -1.45245 17.3662 4.3576 23.6719Z" fill="#6DC928"/>
+                                    </svg>
+
+                                </div>
+                                <label for="amount1"><span data-bind="i18n: 'Pay half part'"></span></label>
+                            </div>
+                        </div>
+                        <div data-role="content">
+                            <div class="control">
+                                <div class="field">
+                                    <label><span data-bind="i18n: 'First installment'"></span></label>
+                                    <div class="static-label">
+                                        <span data-bind="i18n: 'Yes first payment'"></span>
+                                    </div>
+                                    <label><span data-bind="i18n: 'Credit term'"></span></label>
+                                    <div class="half-part-content">
+                                        <select class="option-progres-bar">
+                                        </select>
+                                    </div>
+                                    <label> <span data-bind="i18n: 'Monthly payment'"></span></label>
+                                    <div class="pricing-half-part temp-part">
+                                        <div class="price-box" data-price="">
+                                            <div class="regular-price">
+                                                <div class="price">1249</div>
+                                                <div class="month-pay"><span data-bind="i18n: 'grn'"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control">
+                                <div class="field">
+                                    <div class="info-payments-mobile">
+                                        <span>
+                                            <i class="payment_count-info">3</i><span data-bind="i18n: 'of payment'"></span>
+                                            <span>х</span><i class="month_count-info">3</i><span data-bind="i18n: 'of the month'"></span> 
+                                        </span>
+                                        <div class="overpayment-price"><span data-bind="i18n: 'no overpayment'"></span></div>
+                                    </div>
+                                    <div id="half-part-form">
+                                        <div class="half-part-pay vodafone-btn red mobile-trigger-payment-close">
+                                            <span data-bind="i18n: 'ChoicePayment'"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
