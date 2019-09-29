@@ -1,0 +1,12 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="liqpay_payment" xsi:type="const">CodeCustom\Payments\Model\LiqPay::METHOD_CODE</item>
+                <item name="parts_payment" xsi:type="const">CodeCustom\Payments\Model\PbPartsPayment::METHOD_CODE</item>
+                <item name="instant_installment" xsi:type="const">CodeCustom\Payments\Model\PbInstantInstallment::METHOD_CODE</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

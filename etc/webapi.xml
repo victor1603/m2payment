@@ -1,0 +1,21 @@
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/liqpay/callback" method="POST">
+        <service class="CodeCustom\Payments\Api\CallBack\LiqPayCallBackInterface" method="callback"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/pb/callback" method="POST">
+        <service class="CodeCustom\Payments\Api\CallBack\PrivatBankCallBackInterface" method="callback"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/pb/validation/validate" method="POST">
+        <service class="CodeCustom\Payments\Api\ValidationInterface" method="validate"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>
