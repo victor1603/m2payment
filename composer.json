@@ -13,7 +13,7 @@
   "require": {
     "codecustom/payments": "dev-develop"
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true,
   "autoload": {
     "files": [
