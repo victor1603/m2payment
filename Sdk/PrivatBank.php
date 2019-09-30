@@ -11,7 +11,7 @@ class PrivatBank extends PrivatBankSdk
     const VERSION = '3';
     const TEST_MODE_SURFIX_DELIM = '-';
 
-    const LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT = 'odata/parts_payment';
+    const LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT = 'parts_payment';
 
     const STATUS_SUCCESS            = 'SUCCESS';
     const STATUS_CANCELED           = 'CANCELED';

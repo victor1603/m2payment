@@ -133,6 +133,8 @@ class PrivatBankCallBack implements PrivatBankCallBackInterface
                         $logger->info('key: ' . $k . ' value: ' . $v);
                     }
                 }
+
+                $this->_worker->execute($order, (array)$decodeData);
             } catch (\Exception $e){
 
             }

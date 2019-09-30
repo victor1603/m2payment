@@ -102,7 +102,7 @@ class SectionDataPartsPayment
                     }
                     array_push($result, $item);
                 }
-                $data['part_payment_' . PbPartsPayment::ATTRIBUTE_TERM_CODE] = $this->getPartPaymentData($productType);
+                $data[PbPartsPayment::ATTRIBUTE_TERM_CODE] = $this->getPartPaymentData($productType);
                 if($nonTermed) {
                     $nonTermed = __('Some1 of this products aren\'t available for parts payment');
                 }
