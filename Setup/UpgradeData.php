@@ -47,7 +47,7 @@ class UpgradeData implements UpgradeDataInterface
         /**
          * Add quote fields for some option in Parts Payments or Instant InstallMent
          */
-        $setup->getConnection()->addColumn(
+        /*$setup->getConnection()->addColumn(
             $setup->getTable('quote_payment'),
             'part_payment_term',
             [
@@ -85,13 +85,13 @@ class UpgradeData implements UpgradeDataInterface
                 'nullable' => true,
                 'comment' => 'Credit Overpay Price',
             ]
-        );
+        );*/
 
         /**
          * Add new Product attributes for change Term of Parts Payment Or Instant Installment
          */
 
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+        /*$eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
         $eavSetup->addAttribute(
             \Magento\Catalog\Model\Product::ENTITY,
             PbPartsPayment::ATTRIBUTE_TERM_CODE,
@@ -144,7 +144,7 @@ class UpgradeData implements UpgradeDataInterface
                 'unique' => false,
                 'apply_to' => ''
             ]
-        );
+        );*/
 
         $setup->endSetup();
     }
