@@ -11,6 +11,7 @@ use Magento\Framework\DB\Transaction;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use Magento\Framework\App\RequestInterface;
 use Magento\Sales\Model\Order\Invoice;
+use CodeCustom\Payments\Model\CallBack\LipPayCallback\Worker;
 
 class LiqPayCallBack implements LiqPayCallbackInterface
 {
@@ -31,6 +32,8 @@ class LiqPayCallBack implements LiqPayCallbackInterface
 
     protected $_invoice;
 
+    protected $_worker;
+
     public function __construct(
         Order $order,
         OrderRepositoryInterface $orderRepository,
@@ -39,7 +42,8 @@ class LiqPayCallBack implements LiqPayCallbackInterface
         LiqPayConfig $helper,
         LiqPay $liqPay,
         RequestInterface $request,
-        Invoice $invoice
+        Invoice $invoice,
+        Worker $worker
     )
     {
         $this->_order = $order;
@@ -50,6 +54,7 @@ class LiqPayCallBack implements LiqPayCallbackInterface
         $this->_liqpayConfig = $helper;
         $this->_request = $request;
         $this->_invoice = $invoice;
+        $this->_worker = $worker;
     }
 
     public function callback()
@@ -59,18 +64,12 @@ class LiqPayCallBack implements LiqPayCallbackInterface
             $this->_liqpayConfig->getLogger()->error(__('In the response from LiqPay server there are no POST parameters "data" and "signature"'));
             return null;
         }
-
         $data = $post['data'];
         $receivedSignature = $post['signature'];
-
         $decodedData = $this->_liqpaySdk->getDecodedData($data);
         $orderId = $decodedData['order_id'] ?? null;
         $receivedPublicKey = $decodedData['public_key'] ?? null;
         $status = $decodedData['status'] ?? null;
-        $amount = $decodedData['amount'] ?? null;
-        $currency = $decodedData['currency'] ?? null;
-        $transactionId = $decodedData['transaction_id'] ?? null;
-        $senderPhone = $decodedData['sender_phone'] ?? null;
 
         try {
             $order = $this->getOrder($status, $orderId);
@@ -83,10 +82,10 @@ class LiqPayCallBack implements LiqPayCallbackInterface
                 $this->_orderRepository->save($order);
                 return null;
             }
-
-            $historyMessage = [];
-            $state = null;
-            $invoice = [];
+            /**
+             * execute the worker class
+             */
+            $this->_worker->execute($order, $decodedData);
 
         } catch (\Exception $e) {
             $this->_liqpayConfig->getLogger()->critical($e);
@@ -110,13 +109,4 @@ class LiqPayCallBack implements LiqPayCallbackInterface
         }
         return $this->_order->loadByIncrementId($orderId);
     }
-
-    protected function checkPaymentStatus()
-    {
-
-    }
-
-    /**
-     * Private Methods for change order and invoice
-     */
 }
