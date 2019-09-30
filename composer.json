@@ -1,5 +1,5 @@
 {
-  "name":"codecustom/payments",
+  "name":"codecustom/module-payment",
   "description": "Magento 2 payments methods",
   "type": "magento2-module",
   "version": "1.0.1",
@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "codecustom/payments": "dev-develop"
+    "codecustom/module-payment": "dev-develop"
   },
   "minimum-stability": "stable",
   "prefer-stable": true,
