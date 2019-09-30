@@ -39,6 +39,10 @@ class Worker
         $this->_transactionBuilder = $_transactionBuilder;
     }
 
+    /**
+     * @param Order $order
+     * @param array $decodedData
+     */
     public function execute(Order $order, $decodedData = array())
     {
         $status = isset($decodedData['status']) ? $decodedData['status'] : null;
@@ -88,6 +92,13 @@ class Worker
         $this->saveOrder($state, $order);
     }
 
+    /**
+     * @param Order $order
+     * @param $transactionId
+     * @param $invoiceState
+     * @return bool
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     protected function saveInvoice(Order $order, $transactionId, $invoiceState)
     {
         if ($order->canInvoice()) {
@@ -120,6 +131,12 @@ class Worker
         return true;
     }
 
+    /**
+     * @param Order|null $order
+     * @param array $paymentData
+     * @return bool
+     * @throws \Exception
+     */
     public function createTransaction(Order $order = null, $paymentData = array())
     {
         try {
@@ -161,6 +178,11 @@ class Worker
         return true;
     }
 
+    /**
+     * @param $state
+     * @param Order $order
+     * @throws \Exception
+     */
     protected function saveOrder($state, Order $order)
     {
         if ($state) {

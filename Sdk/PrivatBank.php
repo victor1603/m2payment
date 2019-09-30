@@ -143,8 +143,8 @@ class PrivatBank extends PrivatBankSdk
         if ($overideHelper) {
             $this->_helper = $overideHelper;
         }
-        $loggerHelper = $this->getObjectManager('\Perspective\VodafoneOData\Helper\Logger');
-        $logger = $loggerHelper->createLogger('pp', self::LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT);
+        $loggerHelper = $this->getObjectManager('\CodeCustom\Payments\Helper\Logger');
+        $logger = $loggerHelper->create('pp', self::LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT);
         $postData = $this->getPostData($order, $partsCount);
 
         $logger->info('Try to send cURL to ' . $this->_checkout_url . ' with params:');

@@ -10,7 +10,7 @@ class PrivatBankSdk
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
-    protected $_checkout_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/hold';
+    protected $_checkout_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/create';
     protected $_checkout_redirect_url = 'https://payparts2.privatbank.ua/ipp/v2/payment?token=';
     protected $_confirm_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/confirm';
     protected $_check_status_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/state';

@@ -280,10 +280,10 @@ define(
                 return $form.validation() && $form.validation('isValid');
             },
             afterPlaceOrder: function () {
-                $.post(url.build('parts_payment/checkout/form'), {
+                $.post(url.build('payment/checkout/pbpartspayment'), {
                     'random_string': this._generateRandomString(30),
-                    'part_payment_term': $('[name="payment[part_payment_term]"]').val(),
-                    'part_payment_price': $('[name="payment[part_payment_price]"]').val()
+                    'pp_term': $('[name="payment[pp_term]"]').val(),
+                    'pp_price': $('[name="payment[pp_price]"]').val()
                 }).done(function(data) {
                     if (!data.status) {
                         return
