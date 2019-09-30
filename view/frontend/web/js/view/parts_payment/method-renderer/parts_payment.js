@@ -28,7 +28,7 @@ define(
                     afterRender: function (renderedNodesArray, data) {
                         let cart = customerData.get('cart')();
                         if(cart.has_part_payment) {
-                            let termData = JSON.parse(cart.part_payment_pp_term);
+                            let termData = JSON.parse(cart.pp_term);
                             if(termData.user_defined && !cart.part_payment_message) {
                                 if(renderedNodesArray.length) {
                                     data.selectPaymentMethod();
@@ -169,7 +169,7 @@ define(
                     let cart = customerData.get('cart')();
                     var self = this;
                     if(cart.has_part_payment){
-                        let termData = JSON.parse(cart.part_payment_pp_term);
+                        let termData = JSON.parse(cart.pp_term);
                         var max_credit_terms = termData.pp_term_range;
                         var custom_values = [];
                         let startValue = termData.user_defined ? termData.user_defined : 0;
@@ -183,11 +183,11 @@ define(
                         var resCalc = PP_CALCULATOR.calculatePhys(custom_values[startValue], total_product_price);
                         $(".half-part .payment_count-info").html(custom_values[startValue] + 1);
                         $(".half-part .month_count-info").html(custom_values[startValue]);
-                        $('.half-part [name="payment[part_payment_term]"]').val(custom_values[startValue] + 1);
-                        $('.half-part [name="payment[part_payment_price]"]').val(resCalc['ppValue']);
+                        $('.half-part [name="payment[pp_term]"]').val(custom_values[startValue] + 1);
+                        $('.half-part [name="payment[pp_price]"]').val(resCalc['ppValue']);
                         // load page part-half payment result price
                         $(".half-part .item-credit .price-box .price").text( resCalc['ppValue'] );
-                        $('.half-part [name="payment[part_payment_price]"]').val(resCalc['ppValue']);
+                        $('.half-part [name="payment[pp_price]"]').val(resCalc['ppValue']);
                         var decCache = [],
                             decCases = [2, 0, 1, 1, 1, 2];
                         function decOfNum(number, titles)
@@ -218,8 +218,8 @@ define(
                             $(".half-part .month_count-info + span").html(decOfNum(current_month,[$t('місяць'),$t('місяці'),$t('місяців')]));
                             // changed select part-half payment result price
                             $(".half-part .item-credit .price-box .price").text( resCalc_change['ppValue'] );
-                            $('.half-part [name="payment[part_payment_price]"]').val(resCalc_change['ppValue']);
-                            $('.half-part [name="payment[part_payment_term]"]').val(parseInt(current_month) + 1);
+                            $('.half-part [name="payment[pp_price]"]').val(resCalc_change['ppValue']);
+                            $('.half-part [name="payment[pp_term]"]').val(parseInt(current_month) + 1);
                         });
                         if(startValue){
                             $('.half-part .option-progres-bar').val(parseInt(startValue) + 1);
@@ -253,8 +253,8 @@ define(
                 return {
                     'method': this.item.method,
                     'additional_data': {
-                        'part_payment_term': $('[name="payment[part_payment_term]"]').val(),
-                        'part_payment_price': $('[name="payment[part_payment_price]"]').val()
+                        'pp_term': $('[name="payment[pp_term]"]').val(),
+                        'pp_price': $('[name="payment[pp_price]"]').val()
                     }
                 };
             },
@@ -280,10 +280,10 @@ define(
                 return $form.validation() && $form.validation('isValid');
             },
             afterPlaceOrder: function () {
-                $.post(url.build('parts_payment/checkout/form'), {
+                $.post(url.build('payment/checkout/pbpartspayment'), {
                     'random_string': this._generateRandomString(30),
-                    'part_payment_term': $('[name="payment[part_payment_term]"]').val(),
-                    'part_payment_price': $('[name="payment[part_payment_price]"]').val()
+                    'pp_term': $('[name="payment[pp_term]"]').val(),
+                    'pp_price': $('[name="payment[pp_price]"]').val()
                 }).done(function(data) {
                     if (!data.status) {
                         return

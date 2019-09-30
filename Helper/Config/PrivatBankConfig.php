@@ -139,4 +139,145 @@ class PrivatBankConfig extends AbstractHelper
         }
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getStoreId($paymentCode = 'parts_payment')
+    {
+        if ($this->isSandBox($paymentCode)) {
+            return $this->sandBoxStoreID($paymentCode);
+        }
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_STORE_ID']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorePassword($paymentCode = 'parts_payment')
+    {
+        if ($this->isSandBox($paymentCode)) {
+            return $this->sandBoxPassword($paymentCode);
+        }
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_STORE_PASSWORD']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheme($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_SCHEME']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecipientId($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_RECIPIENT_ID']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantType($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_MERCHANT_TYPE']);
+    }
+
+    /**
+     * @return string
+     */
+    public function isSandBox($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_SAND_BOX']);
+    }
+
+    /**
+     * @return string
+     */
+    public function sandBoxStoreID($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_SAND_BOX_STORE_ID']);
+    }
+
+    /**
+     * @return string
+     */
+    public function sandBoxPassword($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_SAND_BOX_STORE_PASSWORD']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderPrefix($paymentCode = 'parts_payment')
+    {
+        return  $this->getConfigValue($this->$paymentCode['XML_PATH_SAND_BOX_ORDER_PREFIX']);
+    }
+
+    /**
+     * @param $orderIncrementId
+     * @return string
+     */
+    public function getPaymentOrderId($orderIncrementId, $paymentCode = 'parts_payment')
+    {
+        if ($this->isSandBox($paymentCode)) {
+            return $this->getOrderPrefix($paymentCode) . $orderIncrementId;
+        }
+        return $orderIncrementId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResponseUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_RESPONSE_URL']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_REDIRECT_URL']);
+    }
+
+    /**
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->_logger;
+    }
+
+    public function checkCallbackSignature($responseSignature, $orderId, $state, $message, $paymentCode = 'parts_payment')
+    {
+        $signature = base64_encode(sha1($this->getStorePassword($paymentCode) .
+            $this->getStoreId($paymentCode) . $orderId . $state .
+            $message . $this->getStorePassword($paymentCode),
+            true));
+
+        if ($signature == $responseSignature) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getConfirmSignature($orderId, $paymentCode = 'parts_payment')
+    {
+        return base64_encode(sha1($this->getStorePassword($paymentCode) .
+            $this->getStoreId($paymentCode) .
+            $orderId . $this->getStorePassword($paymentCode),
+            true));
+    }
+
+    public function isDevModeEnabled($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_DEV_MODE']);
+    }
 }

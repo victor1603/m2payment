@@ -313,7 +313,7 @@ define(
              * After place order
              */
             afterPlaceOrder: function () {
-                $.post(url.build('credit_payment/instant_checkout/form'), {
+                $.post(url.build('payment/checkout/pbinstantinstallment'), {
                     'ii_term': $('[name="payment[ii_term]"]').val(),
                     'ii_price': $('[name="payment[ii_price]"]').val(),
                     'ii_over_price': $('[name="payment[ii_over_price]"]').val()

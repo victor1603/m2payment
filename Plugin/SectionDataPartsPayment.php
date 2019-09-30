@@ -79,7 +79,7 @@ class SectionDataPartsPayment
                     $options = $quoteItem->getOptions();
                     $partPaymentData = false;
                     foreach ($options as $option) {
-                        if($option->getCode() === 'part_payment') {
+                        if($option->getCode() === PbPartsPayment::METHOD_CODE) {
                             $partPaymentData = $option->getValue();
                         }
                     }
@@ -102,7 +102,7 @@ class SectionDataPartsPayment
                     }
                     array_push($result, $item);
                 }
-                $data['part_payment_' . PbPartsPayment::ATTRIBUTE_TERM_CODE] = $this->getPartPaymentData($productType);
+                $data[PbPartsPayment::ATTRIBUTE_TERM_CODE] = $this->getPartPaymentData($productType);
                 if($nonTermed) {
                     $nonTermed = __('Some1 of this products aren\'t available for parts payment');
                 }
@@ -164,7 +164,7 @@ class SectionDataPartsPayment
                         ]);
                     }
                 } else {
-                    $option = $item->getOptionByCode('part_payment');
+                    $option = $item->getOptionByCode(PbPartsPayment::METHOD_CODE);
                     if ($option) {
                         $creditTerm = json_decode($option->getValue())->defined_term;
                         array_push($result, [

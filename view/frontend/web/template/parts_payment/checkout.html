@@ -11,28 +11,28 @@
     </div>
     <div class="payment-method-content paypart-half">
 
-        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_part_payment_term'}">
+        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_pp_term'}">
             <div class="field" >
                 <div class="control" >
-                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[part_payment_term]" class="input-text" value=""
+                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[pp_term]" class="input-text" value=""
                            data-bind="attr: {
-                                    id: getCode() + '_part_payment_term',
+                                    id: getCode() + '_pp_term',
                                     title: $t('Account Owner'),
                                     placeholder: $t('Email'),
-                                    'data-container': getCode() + '-part_payment_term',
+                                    'data-container': getCode() + '-pp_term',
                                     'data-validate': JSON.stringify({'required':true})},
                                     valueUpdate: 'keyup' "/>
 
                 </div>
             </div>
         </fieldset>
-        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_part_payment_price'}">
+        <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_pp_price'}">
             <div class="field _required">
                 <div class="control">
-                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[part_payment_price]" class="input-text" value=""
+                    <input data-validate="{'required-entry':true}" type="hidden" name="payment[pp_price]" class="input-text" value=""
                            data-bind="attr: {
-                                    id: getCode() + '_part_payment_price',
-                                    'data-container': getCode() + '-part_payment_price',
+                                    id: getCode() + '_pp_price',
+                                    'data-container': getCode() + '-pp_price',
                                     'data-validate': JSON.stringify({'required':true})},
                                     valueUpdate: 'keyup' "/>
                 </div>

@@ -20,6 +20,7 @@ use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Sales\Model\Order;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
+use CodeCustom\Payments\Helper\PbInstantInstallment\Validate;
 
 
 class PbInstantInstallment extends AbstractMethod
@@ -85,6 +86,7 @@ class PbInstantInstallment extends AbstractMethod
         PrivatBankConfig $configHelper,
         CheckoutSession $checkoutSession,
         ProductFactory $productModel,
+        Validate $_validateHelper,
         array $data = array()
     )
     {
@@ -102,7 +104,7 @@ class PbInstantInstallment extends AbstractMethod
             null,
             $data
         );
-
+        $this->_validateHelper = $_validateHelper;
         $this->configHelper = $configHelper;
         $this->_sdk = $privatBank;
         $this->_supportedCurrencyCodes = $privatBank->getSupportedCurrencies();
@@ -154,12 +156,12 @@ class PbInstantInstallment extends AbstractMethod
         if ($quote && $quote->getBaseGrandTotal() < $this->_minOrderTotal) {
             return false;
         }
-        /*if($quote && !$this->_validateHelper->validateQuoteItems($quote)) {
+        if($quote && !$this->_validateHelper->validateQuoteItems($quote)) {
             return false;
         }
         if(!$quote && !$this->_validateHelper->validateQuoteItems()) {
             return false;
-        }*/
+        }
         if($quote && !$this->_validateShipping($quote)) {
             return false;
         }
