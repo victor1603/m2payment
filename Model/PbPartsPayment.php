@@ -125,7 +125,7 @@ class PbPartsPayment extends AbstractMethod
             return false;
         }
         if(!$this->hasPartPaymentItems($quote)) {
-            //return false;
+            return false;
         }
         return parent::isAvailable($quote);
     }
@@ -149,7 +149,7 @@ class PbPartsPayment extends AbstractMethod
                 $sum = 0;
                 foreach ($items as $item) {
                     $product = $this->_productModel->create()->load($item->getProductId());
-                    if(1 || $product->getData('max_credit_term')) {
+                    if(1 || $product->getData(self::ATTRIBUTE_TERM_CODE)) {
                         $sum += ((int)$product->getFinalPrice()) * $item->getQty();
                     }
                 }
@@ -180,7 +180,7 @@ class PbPartsPayment extends AbstractMethod
                 $nonTermed = false;
                 foreach($items as $item) {
                     $product = $this->_productModel->create()->load($item->getProductId());
-                    if($product->getData('max_credit_term')) {
+                    if($product->getData(self::ATTRIBUTE_TERM_CODE)) {
                         $result = true;
                     }else {
                         $nonTermed = true;
@@ -188,7 +188,7 @@ class PbPartsPayment extends AbstractMethod
                     $options = $item->getOptions();
                     if(is_array($options) && !empty($options)) {
                         foreach ($options as $option) {
-                            if($option->getCode() === 'part_payment') {
+                            if($option->getCode() === self::METHOD_CODE) {
                                 $result = true;
                             }
                         }
