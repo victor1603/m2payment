@@ -44,16 +44,6 @@ class PrivatBank extends PrivatBankSdk
     }
 
     /**
-     * @param $params
-     * @return array
-     */
-    protected function prepareParams($params)
-    {
-        $params = [];
-        return $params;
-    }
-
-    /**
      * @return \Perspective\ PartsPayment\Helper\Config
      */
     public function getHelper()
@@ -69,33 +59,13 @@ class PrivatBank extends PrivatBankSdk
         return $this->_supportedCurrencies;
     }
 
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function getDecodedData($data)
-    {
-        return json_decode(base64_decode($data), true, 1024);
-    }
-
-    /**
-     * @param $signature
-     * @param $data
-     * @return bool
-     */
-    public function checkSignature($signature, $data)
-    {
-        $privateKey = $this->_helper->getPrivateKey();
-        $generatedSignature = base64_encode(sha1($privateKey . $data . $privateKey, 1));
-        return $signature == $generatedSignature;
-    }
 
     /**
      * @param $postData
      * @param $url
      * @return array
      */
-    protected function sendPost($postData, $url)
+    protected function sendPost($postData, $url, $paymentCode)
     {
         $curl = curl_init();
 
@@ -115,8 +85,8 @@ class PrivatBank extends PrivatBankSdk
             ),
         );
 
-        if (!$this->_helper->isDevModeEnabled()) {
-            $curlOptions[CURLOPT_PROXY] = "spider.mts.com.ua";
+        if (!$this->_helper->isDevModeEnabled($paymentCode)) {
+            $curlOptions[CURLOPT_PROXY] = "proxy_url";
             $curlOptions[CURLOPT_PROXYPORT] = 3128;
             $curlOptions[CURLOPT_HTTPPROXYTUNNEL] = 1;
         }
@@ -138,11 +108,9 @@ class PrivatBank extends PrivatBankSdk
      * @param null $overideHelper
      * @return array
      */
-    public function getPartsPaymentToken($order, $partsCount, $url, $overideHelper = null)
+    public function getPartsPaymentToken($order, $partsCount, $url)
     {
-        if ($overideHelper) {
-            $this->_helper = $overideHelper;
-        }
+        $paymentCode = $order->getPayment()->getMethod();
         $loggerHelper = $this->getObjectManager('\CodeCustom\Payments\Helper\Logger');
         $logger = $loggerHelper->create('pp', self::LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT);
         $postData = $this->getPostData($order, $partsCount);
@@ -151,22 +119,28 @@ class PrivatBank extends PrivatBankSdk
         $this->logPostData($logger, $postData);
         $logger->info('Now we send cURL');
 
-        $curlResult = $this->sendPost($postData, $this->_checkout_url);
+        $curlResult = $this->sendPost($postData, $this->_checkout_url, $paymentCode);
 
         $response = $curlResult['response'];
         $err = $curlResult['err'];
 
         if ($err) {
-            $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) . ' returning with error: ' . $err);
+            $logger->info('response parts payment to order: ' .
+                $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
+                ' returning with error: ' . $err);
             $result = [
                 'status' => 'error',
                 'redirect' => $url->getUrl($this->_checkout_fail_redirect_url)
             ];
 
             if ($response) {
-                $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) . ' returning with response: ' . $response);
+                $logger->info('response parts payment to order: ' .
+                    $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
+                    ' returning with response: ' . $response);
             }else{
-                $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) . ' returning with no response');
+                $logger->info('response parts payment to order: ' .
+                    $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
+                    ' returning with no response');
             }
 
         } else {
@@ -179,7 +153,8 @@ class PrivatBank extends PrivatBankSdk
             if ($xmlToArr->state == 'SUCCESS' && isset($xmlToArr->token)) {
 
                 foreach ($xmlToArr as $key => $value) {
-                    $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) .
+                    $logger->info('response parts payment to order: ' .
+                        $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
                         ' returning with response key: ' . $key . ' and value: ' .$value );
                 }
                 $result = [
@@ -187,10 +162,13 @@ class PrivatBank extends PrivatBankSdk
                     'redirect' => $this->_checkout_redirect_url . $xmlToArr->token
                 ];
             } else {
-                $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) . ' returning with response: ' . $response);
+                $logger->info('response parts payment to order: ' .
+                    $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
+                    ' returning with response: ' . $response);
                 if (isset($xmlToArr->state) && $xmlToArr->state) {
                     foreach ($xmlToArr as $key => $value) {
-                        $logger->info('response parts payment to order: ' . $this->_helper->getPaymentOrderId($order->getIncrementId()) .
+                        $logger->info('response parts payment to order: ' .
+                            $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode) .
                             ' returning with response key: ' . $key . ' and value: ' .$value );
                     }
                 }
@@ -231,15 +209,16 @@ class PrivatBank extends PrivatBankSdk
      */
     protected function getPostData($order, $partsCount)
     {
+        $paymentCode = $order->getPayment()->getMethod();
         $result = [];
-        $result['storeId'] = $this->_helper->getStoreId();
-        $result['orderId'] = $this->_helper->getPaymentOrderId($order->getIncrementId());
+        $result['storeId'] = $this->_helper->getStoreId($paymentCode);
+        $result['orderId'] = $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode);
         $result['amount'] = $order->getGrandTotal();
         $result['partsCount'] = $partsCount;
-        $result['merchantType'] = $this->_helper->getMerchantType();
+        $result['merchantType'] = $this->_helper->getMerchantType($paymentCode);
         $result['products'] = $this->getProducts($order);
-        $result['responseUrl'] = $this->_helper->getResponseUrl();
-        $result['redirectUrl'] = $this->_helper->getRedirectUrl();
+        $result['responseUrl'] = $this->_helper->getResponseUrl($paymentCode);
+        $result['redirectUrl'] = $this->_helper->getRedirectUrl($paymentCode);
         $result['signature'] = $this->getPartPaymentsSignature($order, $result['amount'], $result['partsCount']);
 
         return $result;
@@ -253,17 +232,18 @@ class PrivatBank extends PrivatBankSdk
      */
     protected function getPartPaymentsSignature($order, $amount = 0, $partsCount = 0)
     {
+        $paymentCode = $order->getPayment()->getMethod();
         $signature = [
-            $this->_helper->getStorePassword(),
-            $this->_helper->getStoreId(),
-            $this->_helper->getPaymentOrderId($order->getIncrementId()),
+            $this->_helper->getStorePassword($paymentCode),
+            $this->_helper->getStoreId($paymentCode),
+            $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode),
             (string)($amount * 100),
             $partsCount,
-            $this->_helper->getMerchantType(),
-            $this->_helper->getResponseUrl(),
-            $this->_helper->getRedirectUrl(),
+            $this->_helper->getMerchantType($paymentCode),
+            $this->_helper->getResponseUrl($paymentCode),
+            $this->_helper->getRedirectUrl($paymentCode),
             $this->getProductsLine($order),
-            $this->_helper->getStorePassword()
+            $this->_helper->getStorePassword($paymentCode)
         ];
 
         return $this->calcSignature($signature);
@@ -359,22 +339,20 @@ class PrivatBank extends PrivatBankSdk
      * @return mixed|\SimpleXMLElement
      */
 
-    public function confirmPayment($order, $overideHelper = null)
+    public function confirmPayment($order)
     {
-        if ($overideHelper) {
-            $this->_helper = $overideHelper;
-        }
+        $paymentCode = $order->getPayment()->getMethod();
 
-        $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId());
+        $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode);
 
         $postData = [
-            'storeId' => $this->_helper->getStoreId(),
+            'storeId' => $this->_helper->getStoreId($paymentCode),
             'orderId' => $ordeID,
-            'signature' => $this->_helper->getConfirmSignature($ordeID)
+            'signature' => $this->_helper->getConfirmSignature($ordeID, $paymentCode)
 
         ];
 
-        $curlResult = $this->sendPost($postData, $this->_confirm_url);
+        $curlResult = $this->sendPost($postData, $this->_confirm_url, $paymentCode);
 
         $response = $curlResult['response'];
         $err = $curlResult['err'];
@@ -398,22 +376,20 @@ class PrivatBank extends PrivatBankSdk
      * @param null $overideHelper
      * @return mixed|\SimpleXMLElement
      */
-    public function getPaymentStatus($order, $overideHelper = null)
+    public function getPaymentStatus($order)
     {
-        if ($overideHelper) {
-            $this->_helper = $overideHelper;
-        }
+        $paymentCode = $order->getPayment()->getMethod();
 
-        $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId());
+        $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode);
 
         $postData = [
-            'storeId' => $this->_helper->getStoreId(),
+            'storeId' => $this->_helper->getStoreId($paymentCode),
             'orderId' => $ordeID,
             'showRefund' => 'true',
-            'signature' =>  $this->_helper->getConfirmSignature($ordeID)
+            'signature' =>  $this->_helper->getConfirmSignature($ordeID, $paymentCode)
         ];
 
-        $curlResult = $this->sendPost($postData, $this->_check_status_url);
+        $curlResult = $this->sendPost($postData, $this->_check_status_url, $paymentCode);
         $response = $curlResult['response'];
         $err = $curlResult['err'];
 

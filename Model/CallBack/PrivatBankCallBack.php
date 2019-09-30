@@ -117,7 +117,11 @@ class PrivatBankCallBack implements PrivatBankCallBackInterface
                     $paymentMethod = $order->getPayment()->getMethod();
                 }
 
-                if (!$this->_helper->checkCallbackSignature((string)$signature, (string)$orderIdSandBox, (string)$paymentState, (string)$message)) {
+                if (!$this->_helper->checkCallbackSignature((string)$signature,
+                    (string)$orderIdSandBox,
+                    (string)$paymentState,
+                    (string)$message,
+                    $paymentMethod)) {
                     $order->addStatusHistoryComment(__('Parts payment security check failed!'));
                     $this->_orderRepository->save($order);
                     return null;

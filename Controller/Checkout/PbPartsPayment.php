@@ -11,7 +11,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
-use CodeCustom\Payments\Model\PbPartsPayment as Payment;
 use CodeCustom\Payments\Model\PbPartsPayment as PbPartsPaymentModel;
 
 class PbPartsPayment extends Action
