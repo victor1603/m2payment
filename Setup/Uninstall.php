@@ -40,7 +40,7 @@ class Uninstall implements UninstallInterface
             'credit_payment_overpay'
         );
 
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+        $eavSetup = $this->eavSetupFactory->create();
         $eavSetup->removeAttribute(\Magento\Catalog\Model\Product::ENTITY, PbPartsPayment::ATTRIBUTE_TERM_CODE);
         $eavSetup->removeAttribute(\Magento\Catalog\Model\Product::ENTITY, PbInstantInstallment::ATTRIBUTE_TERM_CODE);
         $setup->endSetup();
