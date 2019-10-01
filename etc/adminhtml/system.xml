@@ -15,7 +15,7 @@
                     <label>Test Mode</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sandbox_order_sufix" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                <field id="sandbox_order_surfix" translate="label comment" type="text" sortOrder="20" showInDefault="1"
                        showInWebsite="1" showInStore="0">
                     <label>Test Order Surfix</label>
                     <comment><![CDATA[For example: 000000005-<b>test</b>]]></comment>
