@@ -2,7 +2,7 @@
 
 namespace CodeCustom\Payments\Model\CallBack;
 
-use CodeCustom\Payments\Api\CallBack\LiqPayCallbackInterface;
+use CodeCustom\Payments\Api\CallBack\LiqPayCallBackInterface;
 use Magento\Sales\Model\Order;
 use CodeCustom\Payments\Sdk\LiqPay;
 use Magento\Sales\Api\OrderRepositoryInterface;
@@ -11,9 +11,9 @@ use Magento\Framework\DB\Transaction;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use Magento\Framework\App\RequestInterface;
 use Magento\Sales\Model\Order\Invoice;
-use CodeCustom\Payments\Model\CallBack\LipPayCallback\Worker;
+use CodeCustom\Payments\Model\CallBack\LipPayCallBack\Worker;
 
-class LiqPayCallBack implements LiqPayCallbackInterface
+class LiqPayCallBack implements LiqPayCallBackInterface
 {
 
     protected $_order;
