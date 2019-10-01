@@ -1,5 +1,5 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="CodeCustom\Payments\Api\CallBack\LiqPayCallBackInterface"
+    <preference for="CodeCustom\Payments\Api\CallBack\LiqPayCallbackInterface"
                 type="CodeCustom\Payments\Model\CallBack\LiqPayCallback"/>
 
     <preference for="CodeCustom\Payments\Api\CallBack\PrivatBankCallBackInterface"

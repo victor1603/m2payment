@@ -1,7 +1,7 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
     <route url="/V1/liqpay/callback" method="POST">
-        <service class="CodeCustom\Payments\Api\CallBack\LiqPayCallBackInterface" method="callback"/>
+        <service class="CodeCustom\Payments\Api\CallBack\LiqPayCallbackInterface" method="callback"/>
         <resources>
             <resource ref="anonymous"/>
         </resources>
