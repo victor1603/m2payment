@@ -21,4 +21,14 @@
                 sortOrder="15"
                 disabled="false"/>
     </type>
+    <type name="Magento\Framework\Webapi\Rest\Request\DeserializerFactory" shared="true">
+        <arguments>
+            <argument name="deserializers" xsi:type="array">
+                <item name="application_urlencoded" xsi:type="array">
+                    <item name="type" xsi:type="string">application/x-www-form-urlencoded</item>
+                    <item name="model" xsi:type="string">CodeCustom\Payments\Webapi\Rest\Request\UrlEncoded</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

@@ -6,12 +6,6 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
-    <route url="/V1/liqpay/callback" method="GET">
-        <service class="CodeCustom\Payments\Api\CallBack\LiqPayCallBackInterface" method="callback"/>
-        <resources>
-            <resource ref="anonymous"/>
-        </resources>
-    </route>
     <route url="/V1/pb/callback" method="POST">
         <service class="CodeCustom\Payments\Api\CallBack\PrivatBankCallBackInterface" method="callback"/>
         <resources>
