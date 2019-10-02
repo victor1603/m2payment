@@ -21,12 +21,29 @@
                 sortOrder="15"
                 disabled="false"/>
     </type>
-    <type name="Magento\Framework\Webapi\Rest\Request\DeserializerFactory" shared="true">
+
+    <type name="Magento\Framework\Webapi\Rest\Request\DeserializerFactory">
         <arguments>
             <argument name="deserializers" xsi:type="array">
-                <item name="application_urlencoded" xsi:type="array">
+                <item name="application_url_encoded" xsi:type="array">
                     <item name="type" xsi:type="string">application/x-www-form-urlencoded</item>
                     <item name="model" xsi:type="string">CodeCustom\Payments\Webapi\Rest\Request\UrlEncoded</item>
+                </item>
+                <item name="application_json" xsi:type="array">
+                    <item name="type" xsi:type="string">application/json</item>
+                    <item name="model" xsi:type="string">Magento\Framework\Webapi\Rest\Request\Deserializer\Json</item>
+                </item>
+                <item name="application_xml" xsi:type="array">
+                    <item name="type" xsi:type="string">application/xml</item>
+                    <item name="model" xsi:type="string">Magento\Framework\Webapi\Rest\Request\Deserializer\Xml</item>
+                </item>
+                <item name="application_xhtml_xml" xsi:type="array">
+                    <item name="type" xsi:type="string">application/xhtml+xml</item>
+                    <item name="model" xsi:type="string">Magento\Framework\Webapi\Rest\Request\Deserializer\Xml</item>
+                </item>
+                <item name="text_xml" xsi:type="array">
+                    <item name="type" xsi:type="string">text/xml</item>
+                    <item name="model" xsi:type="string">Magento\Framework\Webapi\Rest\Request\Deserializer\Xml</item>
                 </item>
             </argument>
         </arguments>
