@@ -1,8 +1,6 @@
 <?php
 
-
 namespace CodeCustom\Payments\Webapi\Rest\Request;
-
 
 use Magento\Framework\App\State;
 use Magento\Framework\Phrase;

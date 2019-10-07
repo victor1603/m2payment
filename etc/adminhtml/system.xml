@@ -24,6 +24,11 @@
                        showInStore="1">
                     <label>Title</label>
                 </field>
+                <field id="payment_type" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Current pyament type (Action)</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\LiqPay\PaymentType</source_model>
+                    <comment>Liqpay have 2 actions: pay and hold (pay is default)</comment>
+                </field>
                 <field id="active_shipping" translate="label" type="multiselect" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Active for shipping methods</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\ShippingMethods</source_model>
@@ -69,54 +74,59 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled - cURL not used tunnel access, disable this option if used on vodafone.ua</comment>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Titile</label>
                 </field>
-                <field id="checkout_error" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="payment_type" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Current pyament type (Action)</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\PrivatBank\PaymentType</source_model>
+                    <comment>PrivatBank have 2 actions: pay and hold (pay is default)</comment>
+                </field>
+                <field id="checkout_error" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Checkout item error message</label>
                 </field>
-                <field id="min_price" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="min_price" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Min product price</label>
                     <validate>validate-number</validate>
                 </field>
-                <field id="active_shipping" translate="label" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="active_shipping" translate="label" type="multiselect" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Active for shipping methods</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\ShippingMethods</source_model>
                 </field>
-                <field id="store_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="store_id" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Store ID</label>
                 </field>
-                <field id="store_password" translate="label" type="password" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="store_password" translate="label" type="password" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Store Password</label>
                 </field>
-                <field id="scheme" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="scheme" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Scheme</label>
                 </field>
-                <field id="recipient_id" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="recipient_id" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Recipient ID</label>
                 </field>
-                <field id="merchant_type" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="merchant_type" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Merchant Type</label>
                     <comment>PP - parts payment</comment>
                 </field>
-                <field id="sand_box" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box" translate="label" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sand_box_prefix" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_prefix" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Order ID PREFIX</label>
                     <comment>You can add _ symbol between prefix and order ID, example: testprefix_</comment>
                 </field>
-                <field id="sand_box_store_id" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_store_id" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Store ID</label>
                 </field>
-                <field id="sand_box_store_password" translate="label" type="password" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_store_password" translate="label" type="password" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Password</label>
                 </field>
-                <field id="response_url" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="response_url" translate="label" type="text" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Response URL</label>
                 </field>
-                <field id="redirect_url" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="redirect_url" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Redirect URL</label>
                 </field>
             </group>
@@ -131,63 +141,133 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled - cURL not used tunnel access, disable this option if used on vodafone.ua</comment>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Title</label>
                 </field>
-                <field id="checkout_error" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="payment_type" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Current pyament type (Action)</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\PrivatBank\PaymentType</source_model>
+                    <comment>PrivatBank have 2 actions: pay and hold (pay is default)</comment>
+                </field>
+                <field id="checkout_error" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Checkout error message</label>
                 </field>
-                <field id="min_price" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="min_price" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Min product price</label>
                     <validate>validate-number</validate>
                 </field>
-                <field id="active_shipping" translate="label" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="active_shipping" translate="label" type="multiselect" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Active for shipping methods</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\ShippingMethods</source_model>
                 </field>
-                <field id="store_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="store_id" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Store ID</label>
                 </field>
 
-                <field id="store_password" translate="label" type="password" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="store_password" translate="label" type="password" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Store Password</label>
                 </field>
 
-                <field id="scheme" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="scheme" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Scheme</label>
                 </field>
 
-                <field id="recipient_id" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="recipient_id" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Recipient ID</label>
                 </field>
 
-                <field id="merchant_type" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="merchant_type" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Merchant Type</label>
                     <comment>II - instant payment</comment>
                 </field>
 
-                <field id="sand_box" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box" translate="label" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sand_box_prefix" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_prefix" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Order ID PREFIX</label>
                     <comment>You can add _ symbol between prefix and order ID, example: testprefix_</comment>
                 </field>
-                <field id="sand_box_store_id" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_store_id" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Store ID</label>
                 </field>
-                <field id="sand_box_store_password" translate="label" type="password" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="sand_box_store_password" translate="label" type="password" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sand BOX Password</label>
                 </field>
 
-                <field id="response_url" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="response_url" translate="label" type="text" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Response URL</label>
                 </field>
-                <field id="redirect_url" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="redirect_url" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Redirect URL</label>
                 </field>
             </group>
+        </section>
+
+        <tab id="codecustom_tab" translate="label" sortOrder="1000001">
+            <label>Code custom</label>
+        </tab>
+        <section id="codecustom" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Payments custom options</label>
+            <tab>codecustom_tab</tab>
+            <resource>CodeCustom_Payments::config</resource>
+            <group id="liqpay_payment" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Liqpay custom options</label>
+                <field id="api_url" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Liqpay API URL</label>
+                </field>
+                <field id="checkout_url" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Liqpay CHECKOUT URL</label>
+                </field>
+                <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hold success order status</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+            </group>
+            <group id="parts_payment" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Parts payment custom options</label>
+                <field id="api_url" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PP API URL</label>
+                </field>
+                <field id="checkout_url" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PP CHECKOUT URL</label>
+                </field>
+                <field id="confirm_url" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PP Confirm URL</label>
+                </field>
+                <field id="check_status_url" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PP check status URL</label>
+                </field>
+                <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hold success order status</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+            </group>
+            <group id="instant_installment" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Instant installment custom options</label>
+                <field id="api_url" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>II API URL</label>
+                </field>
+                <field id="checkout_url" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>II CHECKOUT URL</label>
+                </field>
+                <field id="confirm_url" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>II Confirm URL</label>
+                </field>
+                <field id="check_status_url" translate="label" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>II check status URL</label>
+                </field>
+                <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hold success order status</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+            </group>
+
         </section>
     </system>
 </config>

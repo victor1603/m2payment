@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Helper\PbInstantInstallment;
 
 use Magento\Framework\App\Helper\AbstractHelper;

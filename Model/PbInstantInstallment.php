@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model;
 
 use CodeCustom\Payments\Sdk\PrivatBank;
@@ -21,7 +20,6 @@ use Magento\Quote\Api\Data\CartInterface;
 use Magento\Sales\Model\Order;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
 use CodeCustom\Payments\Helper\PbInstantInstallment\Validate;
-
 
 class PbInstantInstallment extends AbstractMethod
 {

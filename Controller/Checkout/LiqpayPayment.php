@@ -1,13 +1,5 @@
 <?php
 
-/**
- * LiqPay Extension for Magento 2
- *
- * @author     Volodymyr Konstanchuk http://konstanchuk.com
- * @copyright  Copyright (c) 2017 The authors
- * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- */
-
 namespace CodeCustom\Payments\Controller\Checkout;
 
 use Magento\Framework\App\Action\Action;
@@ -17,7 +9,6 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
-
 
 class LiqpayPayment extends Action
 {

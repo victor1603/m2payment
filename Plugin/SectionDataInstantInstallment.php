@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Plugin;
 
 use Magento\Checkout\CustomerData\Cart;

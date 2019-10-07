@@ -22,9 +22,10 @@ class PrivatBank extends PrivatBankSdk
     const STATUS_PP_CREATION        = 'PP_CREATION';
     const STATUS_LOCKED             = 'LOCKED';
     const STATUS_SANDBOX            = 'sandbox';
-
     const STATUS_PENDING            = 'pending';
 
+    const STANDART_PB_ACTION        = 'pay';
+    const HOLD_PB_ACTION            = 'hold';
 
     const INVOICE_STATE_HOLD_WAIT      = 1;
     const INVOICE_STATE_HOLD_PAID      = 2;
@@ -57,6 +58,15 @@ class PrivatBank extends PrivatBankSdk
     public function getSupportedCurrencies()
     {
         return $this->_supportedCurrencies;
+    }
+
+    public function getCheckoutUrl($paymentCode)
+    {
+        if (!$paymentCode) {
+            throw new \Exception('No payment method');
+        }
+
+        return $this->_helper->getPaymentURL($paymentCode);
     }
 
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;

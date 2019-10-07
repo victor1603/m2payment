@@ -1,8 +1,8 @@
 <?php
 
-
 namespace CodeCustom\Payments\Helper\Config;
 
+use CodeCustom\Payments\Sdk\PrivatBank;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
@@ -27,7 +27,13 @@ class PrivatBankConfig extends AbstractHelper
         'XML_PATH_RESPONSE_URL' => 'payment/parts_payment/response_url',
         'XML_PATH_REDIRECT_URL' => 'payment/parts_payment/redirect_url',
         'XML_PATH_DEV_MODE' => 'payment/parts_payment/dev_mode',
-        'XML_PATH_SHIPP' => 'payment/parts_payment/active_shipping'
+        'XML_PATH_SHIPP' => 'payment/parts_payment/active_shipping',
+        'XML_PATH_PAYMENT_TYPE' => 'payment/parts_payment/payment_type',
+        'XML_PATH_CUSTOM_API_URL' => 'codecustom/parts_payment/api_url',
+        'XML_PATH_CUSTOM_CHECKOUT_URL' => 'codecustom/parts_payment/checkout_url',
+        'XML_PATH_CUSTOM_CONFIRM_URL' => 'codecustom/parts_payment/confirm_url',
+        'XML_PATH_CUSTOM_CHECK_ST_URL' => 'codecustom/parts_payment/check_status_url',
+        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS' => 'codecustom/parts_payment/hold_confirm_order_status'
     ];
 
     const CONFIG_FIELDS_II = [
@@ -47,7 +53,13 @@ class PrivatBankConfig extends AbstractHelper
         'XML_PATH_RESPONSE_URL' => 'payment/instant_installment/response_url',
         'XML_PATH_REDIRECT_URL' => 'payment/instant_installment/redirect_url',
         'XML_PATH_DEV_MODE' => 'payment/instant_installment/dev_mode',
-        'XML_PATH_SHIPP' => 'payment/instant_installment/active_shipping'
+        'XML_PATH_SHIPP' => 'payment/instant_installment/active_shipping',
+        'XML_PATH_PAYMENT_TYPE' => 'payment/instant_installment/payment_type',
+        'XML_PATH_CUSTOM_API_URL' => 'codecustom/instant_installment/api_url',
+        'XML_PATH_CUSTOM_CHECKOUT_URL' => 'codecustom/instant_installment/checkout_url',
+        'XML_PATH_CUSTOM_CONFIRM_URL' => 'codecustom/instant_installment/confirm_url',
+        'XML_PATH_CUSTOM_CHECK_ST_URL' => 'codecustom/instant_installment/check_status_url',
+        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS' => 'codecustom/instant_installment/hold_confirm_order_status',
     ];
 
     /**
@@ -279,5 +291,48 @@ class PrivatBankConfig extends AbstractHelper
     public function isDevModeEnabled($paymentCode = 'parts_payment')
     {
         return $this->getConfigValue($this->$paymentCode['XML_PATH_DEV_MODE']);
+    }
+
+    public function getPaymentType($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getApiUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getCheckoutUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getConfirmUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getCheckStatusUrl($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getConfirmHoldStatus($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+    }
+
+    public function getApiUrlByType($paymentCode = 'parts_payment')
+    {
+        $resultURL = null;
+        switch ($this->getPaymentType($paymentCode)) {
+            case PrivatBank::STANDART_PB_ACTION:
+                break;
+
+            case PrivatBank::HOLD_PB_ACTION:
+                break;
+        }
+        return $resultURL;
     }
 }

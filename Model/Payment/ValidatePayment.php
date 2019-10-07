@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model\Payment;
 
 use CodeCustom\Payments\Api\ValidationInterface;

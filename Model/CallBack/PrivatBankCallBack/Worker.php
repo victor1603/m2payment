@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model\CallBack\PrivatBankCallBack;
 
 use \Magento\Sales\Model\Order;
