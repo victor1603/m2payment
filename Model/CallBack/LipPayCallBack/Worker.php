@@ -1,7 +1,6 @@
 <?php
 
-
-namespace CodeCustom\Payments\Model\CallBack\LipPayCallback;
+namespace CodeCustom\Payments\Model\CallBack\LipPayCallBack;
 
 use \Magento\Sales\Model\Order;
 use \CodeCustom\Payments\Sdk\LiqPay;

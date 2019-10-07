@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Controller\Checkout;
 
 use CodeCustom\Payments\Sdk\PrivatBank;

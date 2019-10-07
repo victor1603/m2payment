@@ -2,7 +2,7 @@
 
 namespace CodeCustom\Payments\Api\CallBack;
 
-interface LiqPayCallbackInterface
+interface LiqPayCallBackInterface
 {
 
     /**

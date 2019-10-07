@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Helper\Config;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -19,6 +18,10 @@ class LiqPayConfig extends AbstractHelper
     const XML_PATH_TEST_ORDER_SURFIX        = 'payment/liqpay_payment/sandbox_order_surfix';
     const XML_PATH_DESCRIPTION              = 'payment/liqpay_payment/description';
     const XML_PATH_CALLBACK_SECURITY_CHECK  = 'payment/liqpay_payment/security_check';
+    const XML_PATH_PAYMENT_TYPE             = 'payment/liqpay_payment/payment_type';
+    const XML_PATH_PAYMENT_API_URL          = 'codecustom/liqpay_payment/api_url';
+    const XML_PATH_PAYMENT_CHECKOUT_URL     = 'codecustom/liqpay_payment/checkout_url';
+    const XML_PATH_HOLD_CONFIRM_STATUS      = 'codecustom/liqpay_payment/hold_confirm_order_status';
 
     protected $_paymentHelper;
 
@@ -83,6 +86,38 @@ class LiqPayConfig extends AbstractHelper
     {
         return trim($this->scopeConfig->getValue(
             static::XML_PATH_TEST_ORDER_SURFIX,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getPaymentType()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_PAYMENT_TYPE,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getAPIUrl()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_PAYMENT_API_URL,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getCheckoutUrl()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_PAYMENT_CHECKOUT_URL,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getConfirmHoldStatus()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_HOLD_CONFIRM_STATUS,
             ScopeInterface::SCOPE_STORE
         ));
     }

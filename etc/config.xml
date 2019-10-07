@@ -13,6 +13,7 @@
                 <allowspecific>0</allowspecific>
                 <description><![CDATA[Purchase of goods in the store. Order #{order_id}.]]></description>
                 <security_check>1</security_check>
+                <payment_type>pay</payment_type>
             </liqpay_payment>
             <parts_payment>
                 <active>0</active>
@@ -25,6 +26,7 @@
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>PP</merchant_type>
+                <payment_type>pay</payment_type>
             </parts_payment>
             <instant_installment>
                 <active>0</active>
@@ -37,7 +39,29 @@
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>II</merchant_type>
+                <payment_type>pay</payment_type>
             </instant_installment>
         </payment>
+        <codecustom>
+            <liqpay_payment>
+                <api_url></api_url>
+                <checkout_url></checkout_url>
+                <hold_confirm_order_status>0</hold_confirm_order_status>
+            </liqpay_payment>
+            <parts_payment>
+                <api_url></api_url>
+                <checkout_url></checkout_url>
+                <confirm_url></confirm_url>
+                <check_status_url></check_status_url>
+                <hold_confirm_order_status>0</hold_confirm_order_status>
+            </parts_payment>
+            <instant_installment>
+                <api_url></api_url>
+                <checkout_url></checkout_url>
+                <confirm_url></confirm_url>
+                <check_status_url></check_status_url>
+                <hold_confirm_order_status>0</hold_confirm_order_status>
+            </instant_installment>
+        </codecustom>
     </default>
 </config>

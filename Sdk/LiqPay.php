@@ -23,6 +23,8 @@ class LiqPay extends LiqPaySdk
     const INVOICE_STATE_HOLD_WAIT      = 1;
     const INVOICE_STATE_HOLD_PAID      = 2;
     const INVOICE_STATE_HOLD_ERROR     = 3;
+    const STANDART_LIQPAY_ACTION = 'pay';
+    const HOLD_LIQPAY_ACTION = 'hold';
 
     protected $_liqPayConfig;
 

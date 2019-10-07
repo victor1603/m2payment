@@ -1,20 +1,11 @@
 <?php
 
-/**
- * LiqPay Extension for Magento 2
- *
- * @author     Volodymyr Konstanchuk http://konstanchuk.com
- * @copyright  Copyright (c) 2017 The authors
- * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- */
-
 namespace CodeCustom\Payments\Block\LiqPay;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Sales\Model\Order;
 use CodeCustom\Payments\Sdk\LiqPay;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
-
 
 class SubmitForm extends Template
 {

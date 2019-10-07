@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model;
 
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;

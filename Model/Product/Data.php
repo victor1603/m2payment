@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Model\Product;
 
 use Magento\Catalog\Model\ProductFactory;

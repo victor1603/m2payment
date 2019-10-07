@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\Payments\Helper\PbInstantInstallment;
 
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
