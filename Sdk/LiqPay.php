@@ -91,4 +91,19 @@ class LiqPay extends LiqPaySdk
         $generatedSignature = base64_encode(sha1($privateKey . $data . $privateKey, 1));
         return $signature == $generatedSignature;
     }
+
+    public function holdConfirm(\Magento\Sales\Model\Order $order)
+    {
+        $result = null;
+        if ($order && $order->getId()) {
+            $result = $this->api('request',
+                [
+                    'action'        => $this->_liqPayConfig->getHoldAction(),
+                    'version'       => $this->_liqPayConfig->getVersion(),
+                    'amount'        => $order->getGrandTotal(),
+                    'order_id'      => $order->getId()
+                ]);
+        }
+        return $result;
+    }
 }

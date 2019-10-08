@@ -2,9 +2,11 @@
 
 namespace CodeCustom\Payments\Sdk;
 
+use CodeCustom\Payments\Model\PbPartsPayment;
 use CodeCustom\Payments\Sdk\Core\PrivatBankSdk;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
 use \Magento\Quote\Model\Quote;
+use CodeCustom\Payments\Model\CallBack\PrivatBankCallBack\Worker;
 
 class PrivatBank extends PrivatBankSdk
 {
@@ -35,13 +37,17 @@ class PrivatBank extends PrivatBankSdk
 
     protected $_quote;
 
+    protected $worker;
+
     public function __construct(
         PrivatBankConfig $helper,
-        Quote $quote
+        Quote $quote,
+        Worker $worker
     )
     {
         $this->_helper = $helper;
         $this->_quote = $quote;
+        $this->worker = $worker;
     }
 
     /**
@@ -352,9 +358,7 @@ class PrivatBank extends PrivatBankSdk
     public function confirmPayment($order)
     {
         $paymentCode = $order->getPayment()->getMethod();
-
         $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode);
-
         $postData = [
             'storeId' => $this->_helper->getStoreId($paymentCode),
             'orderId' => $ordeID,
@@ -363,10 +367,8 @@ class PrivatBank extends PrivatBankSdk
         ];
 
         $curlResult = $this->sendPost($postData, $this->_confirm_url, $paymentCode);
-
         $response = $curlResult['response'];
         $err = $curlResult['err'];
-
 
         if ($err) {
             $result = $response;
@@ -389,20 +391,16 @@ class PrivatBank extends PrivatBankSdk
     public function getPaymentStatus($order)
     {
         $paymentCode = $order->getPayment()->getMethod();
-
         $ordeID = $this->_helper->getPaymentOrderId($order->getIncrementId(), $paymentCode);
-
         $postData = [
             'storeId' => $this->_helper->getStoreId($paymentCode),
             'orderId' => $ordeID,
             'showRefund' => 'true',
             'signature' =>  $this->_helper->getConfirmSignature($ordeID, $paymentCode)
         ];
-
         $curlResult = $this->sendPost($postData, $this->_check_status_url, $paymentCode);
         $response = $curlResult['response'];
         $err = $curlResult['err'];
-
 
         if ($err) {
             $result = $response;
@@ -424,7 +422,6 @@ class PrivatBank extends PrivatBankSdk
     private function getObjectManager($class)
     {
         $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-
         return $_objectManager->create($class);
     }
 
@@ -475,5 +472,22 @@ class PrivatBank extends PrivatBankSdk
             $finalPrice = $this->getFreeGiftPrice($item, $order);
         }
         return $finalPrice;
+    }
+
+    public function holdConfirm(\Magento\Sales\Model\Order $order)
+    {
+        $checkPayment = $this->getPaymentStatus($order);
+        if ($checkPayment->paymentState == PrivatBank::STATUS_SUCCESS || $checkPayment->paymentState == PrivatBank::STATUS_CANCELED) {
+            return false;
+        }
+
+        $result = $this->confirmPayment($order);
+        if (isset($result->state) && $result->state == PrivatBank::STATUS_SUCCESS) {
+            $this->worker->saveInvoice($order,
+                $order->getIncrementId(),
+                PrivatBank::INVOICE_STATE_HOLD_PAID);
+            return true;
+        }
+        return false;
     }
 }

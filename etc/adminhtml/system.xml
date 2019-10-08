@@ -215,6 +215,12 @@
             <resource>CodeCustom_Payments::config</resource>
             <group id="liqpay_payment" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Liqpay custom options</label>
+                <field id="payment_version" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Liqpay payment version</label>
+                </field>
+                <field id="hold_action" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Liqpay hold action</label>
+                </field>
                 <field id="api_url" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Liqpay API URL</label>
                 </field>
@@ -222,7 +228,12 @@
                     <label>Liqpay CHECKOUT URL</label>
                 </field>
                 <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Hold success order status</label>
+                    <label>Order status to hold confirm</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+                <field id="order_status_after_hold_confirm" translate="label" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order status after confirm hold</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
                     <comment>Choose order status</comment>
                 </field>
@@ -242,7 +253,12 @@
                     <label>PP check status URL</label>
                 </field>
                 <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Hold success order status</label>
+                    <label>Order status to hold confirm</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+                <field id="order_status_after_hold_confirm" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order status after confirm hold</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
                     <comment>Choose order status</comment>
                 </field>
@@ -262,12 +278,16 @@
                     <label>II check status URL</label>
                 </field>
                 <field id="hold_confirm_order_status" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Hold success order status</label>
+                    <label>Order status to hold confirm</label>
+                    <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
+                    <comment>Choose order status</comment>
+                </field>
+                <field id="order_status_after_hold_confirm" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order status after confirm hold</label>
                     <source_model>CodeCustom\Payments\Model\Config\Source\OrderStatus</source_model>
                     <comment>Choose order status</comment>
                 </field>
             </group>
-
         </section>
     </system>
 </config>

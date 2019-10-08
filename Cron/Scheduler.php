@@ -2,14 +2,14 @@
 
 namespace CodeCustom\Payments\Cron;
 
-use \Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
-use CodeCustom\Payments\Model\Hold\LiqPay as LiqPayHold;
-use CodeCustom\Payments\Model\Hold\PrivatBank as PrivatBankHold;
+use \CodeCustom\Payments\Model\ResourceModel\Order;
 use CodeCustom\Payments\Model\LiqPay;
 use CodeCustom\Payments\Model\PbPartsPayment;
 use CodeCustom\Payments\Model\PbInstantInstallment;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
+use CodeCustom\Payments\Sdk\LiqPay as LiqaPaySdk;
+use CodeCustom\Payments\Sdk\PrivatBank as PrivatBankSdk;
 
 class Scheduler
 {
@@ -22,7 +22,7 @@ class Scheduler
     /**
      * @var LiqPayConfig
      */
-    protected $liqPayHold;
+    protected $liqPaySdk;
 
     /**
      * @var LiqPayConfig
@@ -32,7 +32,7 @@ class Scheduler
     /**
      * @var PrivatBankConfig
      */
-    protected $privatBankHold;
+    protected $privatBankSdk;
 
     /**
      * @var PrivatBankConfig
@@ -44,16 +44,16 @@ class Scheduler
      * @param CollectionFactory $order
      */
     public function __construct(
-        CollectionFactory $order,
-        LiqPayHold $liqPayHold,
-        PrivatBankHold $privatBankHold,
+        Order $order,
+        LiqaPaySdk $liqPaySdk,
+        PrivatBankSdk $privatBankSdk,
         LiqPayConfig $liqPayConfig,
         PrivatBankConfig $privatBankConfig
     )
     {
         $this->order = $order;
-        $this->liqPayHold = $liqPayHold;
-        $this->privatBankHold = $privatBankHold;
+        $this->liqPaySdk = $liqPaySdk;
+        $this->privatBankSdk = $privatBankSdk;
         $this->liqPayConfig = $liqPayConfig;
         $this->privatBankConfig = $privatBankConfig;
     }
@@ -64,52 +64,27 @@ class Scheduler
      */
     public function holdChecker()
     {
-        $orderCollection = $this->order->create();
-        $statuses = 0;
-        if ($this->liqPayConfig->getConfirmHoldStatus()) {
-            $orderCollection
-                ->addFieldToFilter('status',
-                    ['eq' => $this->liqPayConfig->getConfirmHoldStatus()]);
-            $statuses++;
-        }
-        if ($this->privatBankConfig->getConfirmHoldStatus(PbPartsPayment::METHOD_CODE)) {
-            $orderCollection
-                ->addFieldToFilter('status',
-                    ['eq' => $this->privatBankConfig->getConfirmHoldStatus(PbPartsPayment::METHOD_CODE)]);
-            $statuses++;
-        }
-        if ($this->privatBankConfig->getConfirmHoldStatus(PbInstantInstallment::METHOD_CODE)) {
-            $orderCollection
-                ->addFieldToFilter('status',
-                    ['eq' => $this->privatBankConfig->getConfirmHoldStatus(PbInstantInstallment::METHOD_CODE)]);
-            $statuses++;
-        }
-
-        if ($statuses == 0) {
-            return false;
-        }
-
-
+        $filterData = [
+            LiqPay::METHOD_CODE => $this->liqPayConfig->getConfirmHoldStatus(),
+            PbPartsPayment::METHOD_CODE => $this->privatBankConfig->getConfirmHoldStatus(PbPartsPayment::METHOD_CODE),
+            PbInstantInstallment::METHOD_CODE => $this->privatBankConfig->getConfirmHoldStatus(PbInstantInstallment::METHOD_CODE)
+        ];
+        $orderCollection = $this->order->getOrdersByPaymentAndStatus($filterData);
         if ($orderCollection && $orderCollection->getSize()) {
             foreach ($orderCollection as $order) {
-                if ($order && $order->getId) {
+                if ($order && $order->getId()) {
                     switch ($order->getPayment()->getMethod()) {
                         case LiqPay::METHOD_CODE:
-                            $this->liqPayHold->execute($order);
+                            $this->liqPaySdk->holdConfirm($order);
                             break;
                         case PbPartsPayment::METHOD_CODE:
-                            $this->privatBankHold->execute($order);
-                            break;
                         case PbInstantInstallment::METHOD_CODE:
-                            $this->privatBankHold->execute($order);
-                            break;
-                        default:
+                            $this->privatBankSdk->holdConfirm($order);
                             break;
                     }
                 }
             }
         }
-
         return null;
     }
 }
