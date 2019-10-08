@@ -219,7 +219,7 @@
                     <label>Liqpay payment version</label>
                 </field>
                 <field id="hold_action" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Liqpay hold action</label>
+                    <label>Liqpay hold confirm action</label>
                 </field>
                 <field id="api_url" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Liqpay API URL</label>

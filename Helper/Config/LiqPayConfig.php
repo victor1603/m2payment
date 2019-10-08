@@ -2,6 +2,7 @@
 
 namespace CodeCustom\Payments\Helper\Config;
 
+use CodeCustom\Payments\Sdk\LiqPay;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
@@ -193,5 +194,13 @@ class LiqPayConfig extends AbstractHelper
     public function getLogger()
     {
         return $this->_logger;
+    }
+
+    public function getBankOrderId($orderId)
+    {
+        if ($this->isTestMode()) {
+            $orderId .= LiqPay::TEST_MODE_SURFIX_DELIM . $this->getTestOrderSurfix();
+        }
+        return $orderId;
     }
 }

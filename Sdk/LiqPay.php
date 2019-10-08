@@ -101,7 +101,7 @@ class LiqPay extends LiqPaySdk
                     'action'        => $this->_liqPayConfig->getHoldAction(),
                     'version'       => $this->_liqPayConfig->getVersion(),
                     'amount'        => $order->getGrandTotal(),
-                    'order_id'      => $order->getId()
+                    'order_id'      => $this->_liqPayConfig->getBankOrderId($order->getIncrementId())
                 ]);
         }
         return $result;

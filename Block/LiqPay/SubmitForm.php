@@ -54,7 +54,7 @@ class SubmitForm extends Template
     {
         $order = $this->getOrder();
         $html = $this->_liqPay->cnb_form(array(
-            'action' => 'pay',
+            'action' => $this->_helper->getPaymentType(),
             'amount' => $order->getGrandTotal(),
             'currency' => $order->getOrderCurrencyCode(),
             'description' => $this->_helper->getLiqPayDescription($order),
