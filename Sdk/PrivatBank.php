@@ -373,10 +373,18 @@ class PrivatBank extends PrivatBankSdk
         if ($err) {
             $result = $response;
         } else {
-            $jsonDecode = json_decode($response);
-            $result = $jsonDecode;
+            try {
+                $jsonDecode = json_decode($response);
+                $result = $jsonDecode;
+            } catch (\Exception $e) {
+                $result = ['error' => $e->getMessage()];
+            }
             if(!$result) {
-                $result = new \SimpleXMLElement($response);
+                try {
+                    $result = new \SimpleXMLElement($response);
+                } catch (\Exception $e) {
+                    $result = ['error' => $e->getMessage()];
+                }
             }
         }
 
