@@ -33,7 +33,8 @@ class PrivatBankConfig extends AbstractHelper
         'XML_PATH_CUSTOM_CHECKOUT_URL' => 'codecustom/parts_payment/checkout_url',
         'XML_PATH_CUSTOM_CONFIRM_URL' => 'codecustom/parts_payment/confirm_url',
         'XML_PATH_CUSTOM_CHECK_ST_URL' => 'codecustom/parts_payment/check_status_url',
-        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS' => 'codecustom/parts_payment/hold_confirm_order_status'
+        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS' => 'codecustom/parts_payment/hold_confirm_order_status',
+        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS_AFTER' => 'codecustom/parts_payment/order_status_after_hold_confirm'
     ];
 
     const CONFIG_FIELDS_II = [
@@ -60,6 +61,7 @@ class PrivatBankConfig extends AbstractHelper
         'XML_PATH_CUSTOM_CONFIRM_URL' => 'codecustom/instant_installment/confirm_url',
         'XML_PATH_CUSTOM_CHECK_ST_URL' => 'codecustom/instant_installment/check_status_url',
         'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS' => 'codecustom/instant_installment/hold_confirm_order_status',
+        'XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS_AFTER' => 'codecustom/instant_installment/order_status_after_hold_confirm'
     ];
 
     /**
@@ -300,27 +302,32 @@ class PrivatBankConfig extends AbstractHelper
 
     public function getApiUrl($paymentCode = 'parts_payment')
     {
-        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_API_URL']);
     }
 
     public function getCheckoutUrl($paymentCode = 'parts_payment')
     {
-        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_CHECKOUT_URL']);
     }
 
     public function getConfirmUrl($paymentCode = 'parts_payment')
     {
-        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_CONFIRM_URL']);
     }
 
     public function getCheckStatusUrl($paymentCode = 'parts_payment')
     {
-        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_CHECK_ST_URL']);
     }
 
     public function getConfirmHoldStatus($paymentCode = 'parts_payment')
     {
-        return $this->getConfigValue($this->$paymentCode['XML_PATH_PAYMENT_TYPE']);
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS']);
+    }
+
+    public function getOrderStatusAfterHoldConfirm($paymentCode = 'parts_payment')
+    {
+        return $this->getConfigValue($this->$paymentCode['XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS_AFTER']);
     }
 
     public function getApiUrlByType($paymentCode = 'parts_payment')

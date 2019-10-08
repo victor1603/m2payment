@@ -2,6 +2,7 @@
 
 namespace CodeCustom\Payments\Helper\Config;
 
+use CodeCustom\Payments\Sdk\LiqPay;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
@@ -11,17 +12,20 @@ use CodeCustom\Payments\Model\LiqPay as LiqPayPayment;
 class LiqPayConfig extends AbstractHelper
 {
 
-    const XML_PATH_IS_ENABLED               = 'payment/liqpay_payment/active';
-    const XML_PATH_PUBLIC_KEY               = 'payment/liqpay_payment/public_key';
-    const XML_PATH_PRIVATE_KEY              = 'payment/liqpay_payment/private_key';
-    const XML_PATH_TEST_MODE                = 'payment/liqpay_payment/sandbox';
-    const XML_PATH_TEST_ORDER_SURFIX        = 'payment/liqpay_payment/sandbox_order_surfix';
-    const XML_PATH_DESCRIPTION              = 'payment/liqpay_payment/description';
-    const XML_PATH_CALLBACK_SECURITY_CHECK  = 'payment/liqpay_payment/security_check';
-    const XML_PATH_PAYMENT_TYPE             = 'payment/liqpay_payment/payment_type';
-    const XML_PATH_PAYMENT_API_URL          = 'codecustom/liqpay_payment/api_url';
-    const XML_PATH_PAYMENT_CHECKOUT_URL     = 'codecustom/liqpay_payment/checkout_url';
-    const XML_PATH_HOLD_CONFIRM_STATUS      = 'codecustom/liqpay_payment/hold_confirm_order_status';
+    const XML_PATH_IS_ENABLED                       = 'payment/liqpay_payment/active';
+    const XML_PATH_PUBLIC_KEY                       = 'payment/liqpay_payment/public_key';
+    const XML_PATH_PRIVATE_KEY                      = 'payment/liqpay_payment/private_key';
+    const XML_PATH_TEST_MODE                        = 'payment/liqpay_payment/sandbox';
+    const XML_PATH_TEST_ORDER_SURFIX                = 'payment/liqpay_payment/sandbox_order_surfix';
+    const XML_PATH_DESCRIPTION                      = 'payment/liqpay_payment/description';
+    const XML_PATH_CALLBACK_SECURITY_CHECK          = 'payment/liqpay_payment/security_check';
+    const XML_PATH_PAYMENT_TYPE                     = 'payment/liqpay_payment/payment_type';
+    const XML_PATH_PAYMENT_API_URL                  = 'codecustom/liqpay_payment/api_url';
+    const XML_PATH_PAYMENT_CHECKOUT_URL             = 'codecustom/liqpay_payment/checkout_url';
+    const XML_PATH_HOLD_CONFIRM_STATUS              = 'codecustom/liqpay_payment/hold_confirm_order_status';
+    const XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS_AFTER = 'codecustom/liqpay_payment/order_status_after_hold_confirm';
+    const XML_PATH_HOLD_ACTION                      = 'codecustom/liqpay_payment/hold_action';
+    const XML_PATH_PAYMENT_VERSION                  = 'codecustom/liqpay_payment/payment_version';
 
     protected $_paymentHelper;
 
@@ -122,6 +126,30 @@ class LiqPayConfig extends AbstractHelper
         ));
     }
 
+    public function getOrderStatusAfterHoldConfirm()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_CUSTOM_HOLD_CONFIRM_STATUS_AFTER,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getHoldAction()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_HOLD_ACTION,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
+    public function getVersion()
+    {
+        return trim($this->scopeConfig->getValue(
+            static::XML_PATH_PAYMENT_VERSION,
+            ScopeInterface::SCOPE_STORE
+        ));
+    }
+
     public function getLiqPayDescription(\Magento\Sales\Api\Data\OrderInterface $order = null)
     {
         $description = trim($this->scopeConfig->getValue(
@@ -166,5 +194,13 @@ class LiqPayConfig extends AbstractHelper
     public function getLogger()
     {
         return $this->_logger;
+    }
+
+    public function getBankOrderId($orderId)
+    {
+        if ($this->isTestMode()) {
+            $orderId .= LiqPay::TEST_MODE_SURFIX_DELIM . $this->getTestOrderSurfix();
+        }
+        return $orderId;
     }
 }

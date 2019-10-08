@@ -44,9 +44,12 @@
         </payment>
         <codecustom>
             <liqpay_payment>
+                <payment_version>3</payment_version>
+                <hold_action>hold_completion</hold_action>
                 <api_url></api_url>
                 <checkout_url></checkout_url>
                 <hold_confirm_order_status>0</hold_confirm_order_status>
+                <order_status_after_hold_confirm>0</order_status_after_hold_confirm>
             </liqpay_payment>
             <parts_payment>
                 <api_url></api_url>
@@ -54,6 +57,7 @@
                 <confirm_url></confirm_url>
                 <check_status_url></check_status_url>
                 <hold_confirm_order_status>0</hold_confirm_order_status>
+                <order_status_after_hold_confirm>0</order_status_after_hold_confirm>
             </parts_payment>
             <instant_installment>
                 <api_url></api_url>
@@ -61,6 +65,7 @@
                 <confirm_url></confirm_url>
                 <check_status_url></check_status_url>
                 <hold_confirm_order_status>0</hold_confirm_order_status>
+                <order_status_after_hold_confirm>0</order_status_after_hold_confirm>
             </instant_installment>
         </codecustom>
     </default>

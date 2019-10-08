@@ -180,10 +180,16 @@ class Worker
     /**
      * @param $state
      * @param Order $order
+     * @param array $history
      * @throws \Exception
      */
-    protected function saveOrder($state, Order $order)
+    protected function saveOrder($state, Order $order, $history = [])
     {
+        if (count($history)) {
+            $order->addStatusHistoryComment(implode(' ', $history))
+                ->setIsCustomerNotified(true);
+        }
+
         if ($state) {
             $order->setState($state);
             $order->setStatus($state);

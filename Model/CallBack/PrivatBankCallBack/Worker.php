@@ -87,7 +87,7 @@ class Worker
      * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function saveInvoice(Order $order, $transactionId, $invoiceState)
+    public function saveInvoice(Order $order, $transactionId, $invoiceState)
     {
         if ($order->canInvoice()) {
             $invoice = $this->_invoiceService->prepareInvoice($order);
@@ -169,10 +169,16 @@ class Worker
     /**
      * @param $state
      * @param Order $order
+     * @param array $history
      * @throws \Exception
      */
-    protected function saveOrder($state, Order $order)
+    protected function saveOrder($state, Order $order, $history = [])
     {
+        if (count($history)) {
+            $order->addStatusHistoryComment(implode(' ', $history))
+                ->setIsCustomerNotified(true);
+        }
+
         if ($state) {
             $order->setState($state);
             $order->setStatus($state);
