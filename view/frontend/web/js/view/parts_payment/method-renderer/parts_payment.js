@@ -207,6 +207,7 @@ define(
                         $(document).on('click touchstart','.half-part .mobile-trigger-payment-close',function(){
                             $(this).closest('.item-credit').find('div[data-role="trigger"]').trigger('click');
                         });
+
                         $(".half-part #half-part-collabsible").accordion({"collapsible": true});
 
                         $(document).on('change','.half-part .option-progres-bar',function(){
