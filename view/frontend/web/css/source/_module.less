@@ -1,3 +1,86 @@
 body{
-  background-color: red;
+  .mobile_info{
+    display: none;
+  }
+  .info-payments-mobile{
+    display: none;
+  }
+  .payment-group-credit-container{
+    position: relative;
+    .actions-toolbar{
+      position: absolute;
+      right: 0;
+      top: 50%;
+      margin-top: -26px;
+    }
+    .credit-pay-container{
+      width: 80%;
+    }
+  }
+
+  .fields-slider{
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    .header-title-slider{
+      display: inline-block;
+      vertical-align: middle;
+      width: 30%;
+      .image-credit{
+        display: inline-block;
+        vertical-align: middle;
+      }
+      label{
+        display: inline-block;
+        vertical-align: middle;
+        width: ~'calc(100% - 40px)';
+      }
+    }
+    .content{
+      display: inline-block;
+      vertical-align: middle;
+      width: 65%;
+      .half-part-content{
+        display: inline-block;
+        vertical-align: middle;
+        width: 65%;
+        i{
+          display: inline-block;
+          font-style: normal;
+          padding-right: 0.5rem;
+          font-weight: 600;
+          font-size: 1.4rem;
+        }
+        span{
+          font-size: 1.4rem;
+          display: inline-block;
+          padding-right: 0.5rem;
+        }
+        select{
+          max-width: 80px;
+        }
+      }
+      .pricing-half-part{
+        display: inline-block;
+        vertical-align: middle;
+        width: 30%;
+        text-align: right;
+        .price-box{
+          .regular-price{
+            .price{
+              display: inline-block;
+              vertical-align: middle;
+              font-size: 1.6rem;
+              font-weight: bold;
+            }
+            .month-pay{
+              display: inline-block;
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+    }
+
+  }
 }

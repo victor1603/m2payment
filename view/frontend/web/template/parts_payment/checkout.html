@@ -70,35 +70,45 @@
             </div>
         </div>
 
-        <div class="checkout-paypart-container">
+        <div class="checkout-paypart-container credit-pay-container">
             <div class="item-credit">
                 <div class="fields-slider pay-half-slider">
                     <div id="half-part-collabsible">
-                        <div data-role="collapsible">
-                            <div data-role="trigger" class="header-title-slider">
-                                <div class="image-credit">
-                                    <svg width="29" height="25" viewBox="0 0 29 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M16.5 25C23.4036 25 29 19.4036 29 12.5C29 5.59644 23.4036 0 16.5 0C9.59644 0 4 5.59644 4 12.5C4 19.4036 9.59644 25 16.5 25Z" fill="#FFDE00"/>
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.3576 23.6719L16.0002 12.5L4.35712 1.32764C-1.45245 7.6333 -1.45245 17.3662 4.3576 23.6719Z" fill="#6DC928"/>
-                                    </svg>
+                        <div class="header-title-slider">
+                            <div class="image-credit">
+                                <svg width="29" height="25" viewBox="0 0 29 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.5 25C23.4036 25 29 19.4036 29 12.5C29 5.59644 23.4036 0 16.5 0C9.59644 0 4 5.59644 4 12.5C4 19.4036 9.59644 25 16.5 25Z" fill="#FFDE00"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.3576 23.6719L16.0002 12.5L4.35712 1.32764C-1.45245 7.6333 -1.45245 17.3662 4.3576 23.6719Z" fill="#6DC928"/>
+                                </svg>
 
-                                </div>
-                                <label for="amount1"><span data-bind="i18n: 'Pay half part'"></span></label>
                             </div>
+                            <label for="amount1"><span data-bind="i18n: 'Pay half part'"></span></label>
                         </div>
-                        <div data-role="content">
+                        <div class="content">
                             <div class="control">
                                 <div class="field">
-                                    <label><span data-bind="i18n: 'First installment'"></span></label>
-                                    <div class="static-label">
-                                        <span data-bind="i18n: 'Yes first payment'"></span>
+                                    <div class="mobile_info">
+                                        <label><span data-bind="i18n: 'First installment'"></span></label>
+                                        <div class="static-label">
+                                            <span data-bind="i18n: 'Yes first payment'"></span>
+                                        </div>
                                     </div>
+                                    <div class="mobile_info">
                                     <label><span data-bind="i18n: 'Credit term'"></span></label>
+                                    </div>
                                     <div class="half-part-content">
+                                         <span class="info_credit_dt">
+                                            <i class="payment_count-info">3</i><span data-bind="i18n: 'of payment'"></span>
+                                         </span>
                                         <select class="option-progres-bar">
                                         </select>
+                                        <span class="info_credit_dt">
+                                            <i class="month_count-info">3</i><span data-bind="i18n: 'of the month'"></span> 
+                                         </span>
                                     </div>
+                                    <div class="mobile_info">
                                     <label> <span data-bind="i18n: 'Monthly payment'"></span></label>
+                                    </div>
                                     <div class="pricing-half-part temp-part">
                                         <div class="price-box" data-price="">
                                             <div class="regular-price">
@@ -117,11 +127,6 @@
                                             <span>х</span><i class="month_count-info">3</i><span data-bind="i18n: 'of the month'"></span> 
                                         </span>
                                         <div class="overpayment-price"><span data-bind="i18n: 'no overpayment'"></span></div>
-                                    </div>
-                                    <div id="half-part-form">
-                                        <div class="half-part-pay vodafone-btn red mobile-trigger-payment-close">
-                                            <span data-bind="i18n: 'ChoicePayment'"></span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
