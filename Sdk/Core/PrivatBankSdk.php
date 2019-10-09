@@ -10,8 +10,6 @@ class PrivatBankSdk
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
-    protected $_checkout_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/create';
-    protected $_checkout_redirect_url = 'https://payparts2.privatbank.ua/ipp/v2/payment?token=';
     protected $_confirm_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/confirm';
     protected $_check_status_url = 'https://payparts2.privatbank.ua/ipp/v2/payment/state';
 
@@ -99,39 +97,6 @@ class PrivatBankSdk
         return $this->_server_response_code;
     }
 
-    /**
-     * cnb_form
-     *
-     * @param array $params
-     *
-     * @return string
-     *
-     * @throws InvalidArgumentException
-     */
-    public function cnb_form($params)
-    {
-        $language = 'ru';
-        if (isset($params['language']) && $params['language'] == 'en') {
-            $language = 'en';
-        }
-
-        $params    = $this->cnb_params($params);
-        $data      = $this->encode_params($params);
-        $signature = $this->cnb_signature($params);
-
-        return sprintf('
-            <form method="POST" action="%s" accept-charset="utf-8">
-                %s
-                %s
-                <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
-            </form>
-            ',
-            $this->_checkout_url,
-            sprintf('<input type="hidden" name="%s" value="%s" />', 'data', $data),
-            sprintf('<input type="hidden" name="%s" value="%s" />', 'signature', $signature),
-            $language
-        );
-    }
 
     /**
      * cnb_signature
