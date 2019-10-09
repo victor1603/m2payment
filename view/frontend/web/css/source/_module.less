@@ -8,13 +8,16 @@ body{
   .payment-group-credit-container{
     position: relative;
     .actions-toolbar{
-      position: absolute;
-      right: 0;
-      top: 50%;
-      margin-top: -26px;
+      display: inline-block;
+      vertical-align: middle;
+      width: 18%;
+      button.action.primary{
+        background-color: #ff5501;
+        border-color: #ff5501;
+      }
     }
     .credit-pay-container{
-      width: 80%;
+      width: 100%;
     }
   }
 
@@ -25,7 +28,7 @@ body{
     .header-title-slider{
       display: inline-block;
       vertical-align: middle;
-      width: 30%;
+      width: 25%;
       .image-credit{
         display: inline-block;
         vertical-align: middle;
@@ -39,12 +42,15 @@ body{
     .content{
       display: inline-block;
       vertical-align: middle;
-      width: 65%;
-      .half-part-content{
+      width: 55%;
+      .half-part-content, .desctop-select-part-half{
         display: inline-block;
         vertical-align: middle;
         width: 65%;
-        i{
+        .month_count-info{
+          display: none;
+        }
+        i, .payment_count-info{
           display: inline-block;
           font-style: normal;
           padding-right: 0.5rem;
@@ -57,7 +63,8 @@ body{
           padding-right: 0.5rem;
         }
         select{
-          max-width: 80px;
+          max-width: 55px;
+          margin-right: 1rem;
         }
       }
       .pricing-half-part{
@@ -66,7 +73,17 @@ body{
         width: 30%;
         text-align: right;
         .price-box{
+          .overpayment-price{
+            white-space: nowrap;
+            width: 100%;
+            display: inline-block;
+            color: #999;
+            font-size: 1.3rem;
+          }
           .regular-price{
+            white-space: nowrap;
+            width: 100%;
+            display: inline-block;
             .price{
               display: inline-block;
               vertical-align: middle;
@@ -82,5 +99,38 @@ body{
       }
     }
 
+  }
+}
+@media screen and (max-width: 1024px){
+  body .fields-slider .header-title-slider{
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  body .fields-slider .content .half-part-content{
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  body .fields-slider .content .pricing-half-part{
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  body .payment-group-credit-container .actions-toolbar{
+    width: 100%;
+  }
+  body .checkout-payment-method .actions-toolbar .primary{
+    display: block;
+    float: none;
+  }
+  body .payment-group-credit-container .actions-toolbar button.action.primary{
+    width: 100%;
+    padding: 12px;
+  }
+  body .fields-slider .content{
+    width: 100%;
+  }
+  body .fields-slider .content .desctop-select-part-half {
+    width: 100%;
+    margin-bottom: 2rem;
   }
 }

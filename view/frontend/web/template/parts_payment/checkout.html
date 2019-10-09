@@ -54,21 +54,7 @@
             <!--/ko-->
         </div>
 
-        <div class="actions-toolbar">
-            <div class="primary">
-                <button class="action primary checkout"
-                        type="submit"
-                        data-bind="
-                        click: placeOrder,
-                        attr: {title: $t('Place Order')},
-                        css: {disabled: !isPlaceOrderActionAllowed()},
-                        enable: (getCode() == isChecked())
-                        "
-                        disabled>
-                    <span data-bind="text: $t('Place Order')"></span>
-                </button>
-            </div>
-        </div>
+
 
         <div class="checkout-paypart-container credit-pay-container">
             <div class="item-credit">
@@ -76,11 +62,10 @@
                     <div id="half-part-collabsible">
                         <div class="header-title-slider">
                             <div class="image-credit">
-                                <svg width="29" height="25" viewBox="0 0 29 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16.5 25C23.4036 25 29 19.4036 29 12.5C29 5.59644 23.4036 0 16.5 0C9.59644 0 4 5.59644 4 12.5C4 19.4036 9.59644 25 16.5 25Z" fill="#FFDE00"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.3576 23.6719L16.0002 12.5L4.35712 1.32764C-1.45245 7.6333 -1.45245 17.3662 4.3576 23.6719Z" fill="#6DC928"/>
+                                <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.5145 20C17.752 20 21.9978 15.5228 21.9978 10C21.9978 4.47715 17.752 0 12.5145 0C7.27706 0 3.03125 4.47715 3.03125 10C3.03125 15.5228 7.27706 20 12.5145 20Z" fill="#FFDE00"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.30762 18.9371L12.1396 9.99994L3.30762 1.06281C-1.10254 6.10706 -1.10254 13.8929 3.30762 18.9371Z" fill="#6DC928"/>
                                 </svg>
-
                             </div>
                             <label for="amount1"><span data-bind="i18n: 'Pay half part'"></span></label>
                         </div>
@@ -113,8 +98,9 @@
                                         <div class="price-box" data-price="">
                                             <div class="regular-price">
                                                 <div class="price">1249</div>
-                                                <div class="month-pay"><span data-bind="i18n: 'grn'"></span></div>
+                                                <div class="month-pay"><span data-bind="i18n: 'grn'"></span>/<span data-bind="i18n: 'month'"></span></div>
                                             </div>
+                                            <div class="overpayment-price"><span data-bind="i18n: 'no overpayment'"></span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -129,6 +115,21 @@
                                         <div class="overpayment-price"><span data-bind="i18n: 'no overpayment'"></span></div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="actions-toolbar">
+                            <div class="primary">
+                                <button class="action primary checkout"
+                                        type="submit"
+                                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())
+                        "
+                                        disabled>
+                                    <span data-bind="text: $t('Place Order')"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
