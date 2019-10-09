@@ -195,17 +195,19 @@ define(
                             if(!decCache[number]) decCache[number] = number % 100 > 4 && number % 100 < 20 ? 2 : decCases[Math.min(number % 10, 5)];
                             return titles[decCache[number]];
                         }
-                        $('.half-part .payment_count-info + span').html(decOfNum(custom_values[startValue] + 1,[$t('платіж'),$t('платежі'),$t('платежів')]));
-                        $(".half-part .month_count-info + span").html(decOfNum(custom_values[startValue],[$t('місяць'),$t('місяці'),$t('місяців')]));
+                        $('.half-part .payment_count-info + span').html(decOfNum(custom_values[startValue] + 1,[$t('payment'),$t('payments'),$t('of payments')]));
+                        $(".half-part .month_count-info + span").html(decOfNum(custom_values[startValue],[$t('month'),$t('months'),$t('of months')]));
                         $.each(custom_values, function(i) {
                             $('.half-part .option-progres-bar')
-                                .append($('<option value="'+ custom_values[i] +'">'+ custom_values[i] +' '+ decOfNum(custom_values[i],[$t('місяць'),$t('місяці'),$t('місяців')]) + '</option>'));
+                                .append($('<option value="'+ custom_values[i] +'">' + custom_values[i] + '</option>'));
                         });
+
                         $('.half-part .option-progres-bar option:first-child').attr("selected", "selected");
                         $('.half-part .option-progres-bar').trigger('change');
                         $(document).on('click touchstart','.half-part .mobile-trigger-payment-close',function(){
                             $(this).closest('.item-credit').find('div[data-role="trigger"]').trigger('click');
                         });
+
                         $(".half-part #half-part-collabsible").accordion({"collapsible": true});
 
                         $(document).on('change','.half-part .option-progres-bar',function(){
@@ -214,8 +216,8 @@ define(
                             $(".half-part .payment_count-info").html(parseInt(current_month) + 1);
                             $(".half-part .month_count-info").html(current_month);
                             // current_month = parseInt(current_month);
-                            $('.half-part .payment_count-info + span').html(decOfNum(parseInt(current_month) + 1,[$t('платіж'),$t('платежі'),$t('платежів')]));
-                            $(".half-part .month_count-info + span").html(decOfNum(current_month,[$t('місяць'),$t('місяці'),$t('місяців')]));
+                            $('.half-part .payment_count-info + span').html(decOfNum(parseInt(current_month) + 1,[$t('payment'),$t('payments'),$t('of payments')]));
+                            $(".half-part .month_count-info + span").html(decOfNum(current_month,[$t('month'),$t('months'),$t('of months')]));
                             // changed select part-half payment result price
                             $(".half-part .item-credit .price-box .price").text( resCalc_change['ppValue'] );
                             $('.half-part [name="payment[pp_price]"]').val(resCalc_change['ppValue']);

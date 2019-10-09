@@ -482,6 +482,11 @@ class PrivatBank extends PrivatBankSdk
         return $finalPrice;
     }
 
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @return bool
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function holdConfirm(\Magento\Sales\Model\Order $order)
     {
         $checkPayment = $this->getPaymentStatus($order);

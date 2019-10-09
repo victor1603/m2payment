@@ -240,8 +240,8 @@ define(
 
                         $(".payment_quick_credit .select-desctop-ph").val(custom_values[startValue]);
                         $(".payment_quick_credit .select-desctop-ph").trigger('change');
-                        $('.payment_quick_credit .payment_count-info + span').html(decOfNum(custom_values[startValue] + 1,[$t('of 1 payment'),$t('of payment'),$t('of payments more')]));
-                        $(".payment_quick_credit .select-desctop-ph + span").html(decOfNum(custom_values[startValue],[$t('of the 1 month'),$t('of the month'),$t('of the months')]));
+                        $('.payment_quick_credit .payment_count-info + span').html(decOfNum(custom_values[startValue] + 1,[$t('payment'),$t('payments'),$t('of payments')]));
+                        $(".payment_quick_credit .select-desctop-ph + span").html(decOfNum(custom_values[startValue],[$t('month'),$t('months'),$t('of months')]));
                         init_overpayment();
                         updateFieldsData();
                         $(document).on('change','.payment_quick_credit select.select-desctop-ph',function(){
@@ -256,8 +256,8 @@ define(
                             $(".payment_quick_credit .payment_count-info").html(parseInt(current_month) + 1);
                             $('.payment_quick_credit [name="payment[part_payment_term]"]').val(parseInt(current_month) + 1);
                             $('.payment_quick_credit [name="payment[part_payment_price]"]').val(resCalc_change['ipValue']);
-                            $('.payment_quick_credit .payment_count-info + span').html(decOfNum(translate_month,[$t('of 1 payment'),$t('of payment'),$t('of payments more')]));
-                            $(".payment_quick_credit .select-desctop-ph + span").html(decOfNum((parseInt(current_month)),[$t('of the 1 month'),$t('of the month'),$t('of the months')]));
+                            $('.payment_quick_credit .payment_count-info + span').html(decOfNum(translate_month,[$t('payment'),$t('payments'),$t('of payments')]));
+                            $(".payment_quick_credit .select-desctop-ph + span").html(decOfNum((parseInt(current_month)),[$t('month'),$t('months'),$t('of months')]));
                             init_overpayment();
                             updateFieldsData();
                         });
