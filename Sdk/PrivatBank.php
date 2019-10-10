@@ -494,10 +494,9 @@ class PrivatBank extends PrivatBankSdk
      * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function holdConfirm(\Magento\Sales\Model\Order $order)
+    public function holdConfirm(\Magento\Sales\Model\Order $order, $logger)
     {
         $checkPayment = $this->getPaymentStatus($order);
-        $logger = $this->logger->create('callback_parts_payment', 'test_cron_pp_ii');
         $logger->info('Check order -> ' . $order->getIncrementId() . ' state -> ' . $checkPayment->paymentState);
         if ($checkPayment->paymentState == PrivatBank::STATUS_SUCCESS || $checkPayment->paymentState == PrivatBank::STATUS_CANCELED) {
             return false;

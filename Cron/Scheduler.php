@@ -10,6 +10,7 @@ use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
 use CodeCustom\Payments\Sdk\LiqPay as LiqaPaySdk;
 use CodeCustom\Payments\Sdk\PrivatBank as PrivatBankSdk;
+use CodeCustom\Payments\Helper\Logger;
 
 class Scheduler
 {
@@ -40,6 +41,11 @@ class Scheduler
     protected $privatBankConfig;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * Scheduler constructor.
      * @param CollectionFactory $order
      */
@@ -48,7 +54,8 @@ class Scheduler
         LiqaPaySdk $liqPaySdk,
         PrivatBankSdk $privatBankSdk,
         LiqPayConfig $liqPayConfig,
-        PrivatBankConfig $privatBankConfig
+        PrivatBankConfig $privatBankConfig,
+        Logger $logger
     )
     {
         $this->order = $order;
@@ -56,6 +63,7 @@ class Scheduler
         $this->privatBankSdk = $privatBankSdk;
         $this->liqPayConfig = $liqPayConfig;
         $this->privatBankConfig = $privatBankConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -70,16 +78,20 @@ class Scheduler
             PbInstantInstallment::METHOD_CODE => $this->privatBankConfig->getConfirmHoldStatus(PbInstantInstallment::METHOD_CODE)
         ];
         $orderCollection = $this->order->getOrdersByPaymentAndStatus($filterData);
+        $logger = $this->logger->create('cron_payment_log', 'test_cron_pp_ii_lq');
+        $logger->info('Get product collection');
         if ($orderCollection && $orderCollection->getSize()) {
+            $logger->info('Get product collection size = ' . $orderCollection->getSize());
             foreach ($orderCollection as $order) {
                 if ($order && $order->getId()) {
+                    $logger->info('Working with order: ' . $order->getIncrementId() . ' method: ' . $order->getPayment()->getMethod());
                     switch ($order->getPayment()->getMethod()) {
                         case LiqPay::METHOD_CODE:
                             $this->liqPaySdk->holdConfirm($order);
                             break;
                         case PbPartsPayment::METHOD_CODE:
                         case PbInstantInstallment::METHOD_CODE:
-                            $this->privatBankSdk->holdConfirm($order);
+                            $this->privatBankSdk->holdConfirm($order, $logger);
                             break;
                     }
                 }
