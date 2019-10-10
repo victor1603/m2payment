@@ -7,6 +7,7 @@ use CodeCustom\Payments\Sdk\Core\PrivatBankSdk;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
 use \Magento\Quote\Model\Quote;
 use CodeCustom\Payments\Model\CallBack\PrivatBankCallBack\Worker;
+use CodeCustom\Payments\Helper\Logger;
 
 class PrivatBank extends PrivatBankSdk
 {
@@ -39,15 +40,19 @@ class PrivatBank extends PrivatBankSdk
 
     protected $worker;
 
+    protected $logger;
+
     public function __construct(
         PrivatBankConfig $helper,
         Quote $quote,
-        Worker $worker
+        Worker $worker,
+        Logger $logger
     )
     {
         $this->_helper = $helper;
         $this->_quote = $quote;
         $this->worker = $worker;
+        $this->logger = $logger;
     }
 
     /**
@@ -492,17 +497,21 @@ class PrivatBank extends PrivatBankSdk
     public function holdConfirm(\Magento\Sales\Model\Order $order)
     {
         $checkPayment = $this->getPaymentStatus($order);
+        $logger = $this->logger->create('callback_parts_payment', 'test_cron_pp_ii');
+        $logger->info('Check order -> ' . $order->getIncrementId() . ' state -> ' . $checkPayment->paymentState);
         if ($checkPayment->paymentState == PrivatBank::STATUS_SUCCESS || $checkPayment->paymentState == PrivatBank::STATUS_CANCELED) {
             return false;
         }
 
         $result = $this->confirmPayment($order);
         $history[] = __('Confirm hold to order ID: %1 with status: %2', $order->getIncrementId(), $result->state);
+        $logger->info('Confirm hold to order ID: '.$order->getIncrementId().' with status: '  . $result->state);
         if (isset($result->state) && $result->state == PrivatBank::STATUS_SUCCESS) {
             $this->worker->saveInvoice($order,
                 $order->getIncrementId(),
                 PrivatBank::INVOICE_STATE_HOLD_PAID);
             $history[] = __('Payment completed successfully');
+            $logger->info('Payment completed successfully');
             $this->worker->saveOrder(
                 $this->_helper->getOrderStatusAfterHoldConfirm($order->getPayment()->getMethod()),
                 $order, $history);
