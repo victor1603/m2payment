@@ -142,7 +142,7 @@ class Worker
             $payment = $order->getPayment();
             $payment->setLastTransId($paymentData['id']);
             $payment->setTransactionId($paymentData['id']);
-            $payment->setMethod('liqpay_payment');
+            $payment->setMethod($order->getPayment()->getMethod());
             $payment->setAdditionalInformation(
                 [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array) $paymentData]
             );
