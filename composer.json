@@ -10,7 +10,9 @@
       "email": "pankovych.v@gmail.com"
     }
   ],
-  "minimum-stability": "stable",
+  "require": {
+    "codecustom/module-payment": "1.0.2"
+  },
   "prefer-stable": true,
   "autoload": {
     "files": [
