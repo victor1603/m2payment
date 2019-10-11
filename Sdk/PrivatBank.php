@@ -7,6 +7,7 @@ use CodeCustom\Payments\Sdk\Core\PrivatBankSdk;
 use CodeCustom\Payments\Helper\Config\PrivatBankConfig;
 use \Magento\Quote\Model\Quote;
 use CodeCustom\Payments\Model\CallBack\PrivatBankCallBack\Worker;
+use CodeCustom\Payments\Helper\Logger;
 
 class PrivatBank extends PrivatBankSdk
 {
@@ -39,15 +40,19 @@ class PrivatBank extends PrivatBankSdk
 
     protected $worker;
 
+    protected $logger;
+
     public function __construct(
         PrivatBankConfig $helper,
         Quote $quote,
-        Worker $worker
+        Worker $worker,
+        Logger $logger
     )
     {
         $this->_helper = $helper;
         $this->_quote = $quote;
         $this->worker = $worker;
+        $this->logger = $logger;
     }
 
     /**
@@ -131,11 +136,13 @@ class PrivatBank extends PrivatBankSdk
         $logger = $loggerHelper->create('pp', self::LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT);
         $postData = $this->getPostData($order, $partsCount);
 
-        $logger->info('Try to send cURL to ' . $this->_checkout_url . ' with params:');
+        $logger->info('Try to send cURL to ' . $this->_helper->getApiUrl($paymentCode) .
+            $this->_helper->getPaymentType($paymentCode) . ' with params:');
         $this->logPostData($logger, $postData);
         $logger->info('Now we send cURL');
 
-        $curlResult = $this->sendPost($postData, $this->_checkout_url, $paymentCode);
+        $checkout_url = $this->_helper->getApiUrl($paymentCode) . $this->_helper->getPaymentType($paymentCode);
+        $curlResult = $this->sendPost($postData, $checkout_url, $paymentCode);
 
         $response = $curlResult['response'];
         $err = $curlResult['err'];
@@ -175,7 +182,7 @@ class PrivatBank extends PrivatBankSdk
                 }
                 $result = [
                     'status' => 'success',
-                    'redirect' => $this->_checkout_redirect_url . $xmlToArr->token
+                    'redirect' => $this->_helper->getCheckoutUrl($paymentCode) . $xmlToArr->token
                 ];
             } else {
                 $logger->info('response parts payment to order: ' .
@@ -487,20 +494,29 @@ class PrivatBank extends PrivatBankSdk
      * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function holdConfirm(\Magento\Sales\Model\Order $order)
+    public function holdConfirm(\Magento\Sales\Model\Order $order, $logger)
     {
         $checkPayment = $this->getPaymentStatus($order);
+        $logger->info('Check order -> ' . $order->getIncrementId() . ' state -> ' . $checkPayment->paymentState);
         if ($checkPayment->paymentState == PrivatBank::STATUS_SUCCESS || $checkPayment->paymentState == PrivatBank::STATUS_CANCELED) {
             return false;
         }
 
         $result = $this->confirmPayment($order);
+        $history[] = __('Confirm hold to order ID: %1 with status: %2', $order->getIncrementId(), $result->state);
+        $logger->info('Confirm hold to order ID: '.$order->getIncrementId().' with status: '  . $result->state);
         if (isset($result->state) && $result->state == PrivatBank::STATUS_SUCCESS) {
             $this->worker->saveInvoice($order,
                 $order->getIncrementId(),
                 PrivatBank::INVOICE_STATE_HOLD_PAID);
+            $history[] = __('Payment completed successfully');
+            $logger->info('Payment completed successfully');
+            $this->worker->saveOrder(
+                $this->_helper->getOrderStatusAfterHoldConfirm($order->getPayment()->getMethod()),
+                $order, $history);
             return true;
         }
+        $this->worker->saveOrder('pending', $order, $history);
         return false;
     }
 }

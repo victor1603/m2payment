@@ -9,6 +9,7 @@ use \Magento\Framework\DB\Transaction;
 use \Magento\Sales\Model\Order\Invoice;
 use \Magento\Sales\Api\OrderRepositoryInterface;
 use \Magento\Sales\Model\Order\Payment\Transaction\BuilderInterface;
+use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 
 class Worker
 {
@@ -23,12 +24,17 @@ class Worker
 
     protected $_transactionBuilder;
 
+    protected $_liqpayConfig;
+
+    public $history = null;
+
     public function __construct(
         InvoiceService $_invoiceService,
         Transaction $_transaction,
         Invoice $_invoice,
         OrderRepositoryInterface $_orderRepository,
-        BuilderInterface $_transactionBuilder
+        BuilderInterface $_transactionBuilder,
+        LiqPayConfig $_liqpayConfig
     )
     {
         $this->_invoiceService = $_invoiceService;
@@ -36,6 +42,7 @@ class Worker
         $this->_invoice = $_invoice;
         $this->_orderRepository = $_orderRepository;
         $this->_transactionBuilder = $_transactionBuilder;
+        $this->_liqpayConfig = $_liqpayConfig;
     }
 
     /**
@@ -48,34 +55,44 @@ class Worker
         $transactionId = isset($decodedData['transaction_id']) ? $decodedData['transaction_id'] : null;
         $state = $order->getState();
         $invoice = true;
+        $this->history[] = __("Callback from Liqpay, order: %1 status: %2", $order->getIncrementId(), $status);
         switch ($status) {
             case LiqPay::STATUS_SANDBOX:
             case LiqPay::STATUS_WAIT_COMPENSATION:
             case LiqPay::STATUS_SUCCESS:
                 $invoice = $this->saveInvoice($order, $transactionId, LiqPay::INVOICE_STATE_HOLD_PAID);
-                $state = null;
+                if ($this->_liqpayConfig->getPaymentType() == LiqPay::HOLD_LIQPAY_ACTION) {
+                    $state = $this->_liqpayConfig->getOrderStatusAfterHoldConfirm();
+                }
+                $this->history[] = __("Payment completed successfully");
                 break;
             case LiqPay::STATUS_FAILURE:
                 $this->saveInvoice($order, $transactionId, LiqPay::INVOICE_STATE_HOLD_ERROR);
                 $state = \Magento\Sales\Model\Order::STATE_CANCELED;
+                $this->history[] = __("Error payment");
                 break;
             case LiqPay::STATUS_ERROR:
                 $this->saveInvoice($order, $transactionId, LiqPay::INVOICE_STATE_HOLD_ERROR);
                 $state = \Magento\Sales\Model\Order::STATE_CANCELED;
+                $this->history[] = __("Error payment");
                 break;
             case LiqPay::STATUS_WAIT_SECURE:
-                $state = \Magento\Sales\Model\Order::STATE_PROCESSING;
+                $state = LiqPay::STATUS_PENDING;
                 break;
             case LiqPay::STATUS_WAIT_ACCEPT:
                 $invoice = $this->saveInvoice($order, $transactionId, LiqPay::INVOICE_STATE_HOLD_PAID);
-                $state = LiqPay::STATUS_PENDING;
+                if ($this->_liqpayConfig->getPaymentType() == LiqPay::HOLD_LIQPAY_ACTION) {
+                    $state = $this->_liqpayConfig->getOrderStatusAfterHoldConfirm();
+                }
+                $this->history[] = __("Payment completed successfully, but store is not activated!!!");
                 break;
             case LiqPay::STATUS_WAIT_CARD:
-                $state = \Magento\Sales\Model\Order::STATE_PROCESSING;
+                $state = LiqPay::STATUS_PENDING;
                 break;
             case LiqPay::STATUS_HOLD_WAIT:
                 $invoice = $this->saveInvoice($order, $transactionId, LiqPay::INVOICE_STATE_HOLD_WAIT);
                 $state = LiqPay::STATUS_PENDING;
+                $this->history[] = __("The payment has been confirmed by the customer and is awaiting confirmation by the store.");
                 break;
             default:
                 break;
@@ -100,6 +117,7 @@ class Worker
      */
     protected function saveInvoice(Order $order, $transactionId, $invoiceState)
     {
+        $this->history[] = __("Creating invoice with transaction ID: %1 and state: %2", $transactionId, $invoiceState);
         if ($order->canInvoice()) {
             $invoice = $this->_invoiceService->prepareInvoice($order);
             $invoice->register()->pay();
@@ -139,10 +157,11 @@ class Worker
     public function createTransaction(Order $order = null, $paymentData = array())
     {
         try {
+            $this->history[] = __("Creating transaction with ID: %1", $paymentData['id']);
             $payment = $order->getPayment();
             $payment->setLastTransId($paymentData['id']);
             $payment->setTransactionId($paymentData['id']);
-            $payment->setMethod('liqpay_payment');
+            $payment->setMethod($order->getPayment()->getMethod());
             $payment->setAdditionalInformation(
                 [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array) $paymentData]
             );
@@ -171,7 +190,7 @@ class Worker
 
             return  $transaction->save()->getTransactionId();
         } catch (Exception $e) {
-
+            $this->history[] = __("Error transaction with ID: %1 not created", $paymentData['id']);
         }
 
         return true;
@@ -183,8 +202,12 @@ class Worker
      * @param array $history
      * @throws \Exception
      */
-    protected function saveOrder($state, Order $order, $history = [])
+    public function saveOrder($state, Order $order, $history = [])
     {
+        if ($this->history) {
+            $history += $this->history;
+        }
+
         if (count($history)) {
             $order->addStatusHistoryComment(implode(' ', $history))
                 ->setIsCustomerNotified(true);

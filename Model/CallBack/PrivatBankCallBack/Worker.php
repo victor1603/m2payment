@@ -22,6 +22,8 @@ class Worker
 
     protected $_transactionBuilder;
 
+    public $history = null;
+
     public function __construct(
         InvoiceService $_invoiceService,
         Transaction $_transaction,
@@ -43,22 +45,29 @@ class Worker
         $transactionId = $order->getIncrementId();
         $state = $order->getState();
         $invoice = false;
+        $this->history[] = __("Callback from PB, order: %1 status: %2", $order->getIncrementId(), $status);
         switch ($status) {
             case PrivatBank::STATUS_FAIL:
                 $this->saveInvoice($order, $transactionId, PrivatBank::INVOICE_STATE_HOLD_ERROR);
                 $state = \Magento\Sales\Model\Order::STATE_CANCELED;
+                $this->history[] = __("Error payment");
                 break;
             case PrivatBank::STATUS_CANCELED:
                 $this->saveInvoice($order, $transactionId, PrivatBank::INVOICE_STATE_HOLD_ERROR);
                 $state = \Magento\Sales\Model\Order::STATE_CANCELED;
+                $this->history[] = __("Error payment");
                 break;
             case PrivatBank::STATUS_SUCCESS:
                 $invoice = $this->saveInvoice($order, $transactionId, PrivatBank::INVOICE_STATE_HOLD_PAID);
+                $this->history[] = __("Payment completed successfully");
                 $state = null;
                 break;
             case PrivatBank::STATUS_CLIENT_WAIT:
+                $this->history[] = __("Waiting for customer payment");
                 break;
             case PrivatBank::STATUS_LOCKED:
+                $invoice = $this->saveInvoice($order, $transactionId, PrivatBank::INVOICE_STATE_HOLD_WAIT);
+                $this->history[] = __("The payment has been confirmed by the customer and is awaiting confirmation by the store.");
                 break;
             case PrivatBank::STATUS_CREATED:
                 break;
@@ -89,6 +98,7 @@ class Worker
      */
     public function saveInvoice(Order $order, $transactionId, $invoiceState)
     {
+        $this->history[] = __("Creating invoice with transaction ID: %1 and state: %2", $transactionId, $invoiceState);
         if ($order->canInvoice()) {
             $invoice = $this->_invoiceService->prepareInvoice($order);
             $invoice->register()->pay();
@@ -128,10 +138,11 @@ class Worker
     public function createTransaction(Order $order = null, $paymentData = array())
     {
         try {
+            $this->history[] = __("Creating transaction with ID: %1", $paymentData['id']);
             $payment = $order->getPayment();
             $payment->setLastTransId($paymentData['id']);
             $payment->setTransactionId($paymentData['id']);
-            $payment->setMethod('liqpay_payment');
+            $payment->setMethod($order->getPayment()->getMethod());
             $payment->setAdditionalInformation(
                 [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => (array) $paymentData]
             );
@@ -160,7 +171,7 @@ class Worker
 
             return  $transaction->save()->getTransactionId();
         } catch (Exception $e) {
-
+            $this->history[] = __("Error transaction with ID: %1 not created", $paymentData['id']);
         }
 
         return true;
@@ -172,8 +183,12 @@ class Worker
      * @param array $history
      * @throws \Exception
      */
-    protected function saveOrder($state, Order $order, $history = [])
+    public function saveOrder($state, Order $order, $history = [])
     {
+        if ($this->history) {
+            $history += $this->history;
+        }
+
         if (count($history)) {
             $order->addStatusHistoryComment(implode(' ', $history))
                 ->setIsCustomerNotified(true);

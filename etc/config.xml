@@ -4,7 +4,7 @@
         <payment>
             <liqpay_payment>
                 <active>0</active>
-                <sandbox>0</sandbox>
+                <sandbox>1</sandbox>
                 <sandbox_order_surfix>lqp_</sandbox_order_surfix>
                 <model>CodeCustom\Payments\Model\LiqPay</model>
                 <payment_action>authorize_capture</payment_action>
@@ -27,6 +27,11 @@
                 <recipient_id></recipient_id>
                 <merchant_type>PP</merchant_type>
                 <payment_type>pay</payment_type>
+                <dev_mode>1</dev_mode>
+                <sand_box>1</sand_box>
+                <sand_box_prefix>tst_</sand_box_prefix>
+                <sand_box_store_id>4AAD1369CF734B64B70F</sand_box_store_id>
+                <sand_box_store_password>75bef16bfdce4d0e9c0ad5a19b9940df</sand_box_store_password>
             </parts_payment>
             <instant_installment>
                 <active>0</active>
@@ -40,6 +45,11 @@
                 <recipient_id></recipient_id>
                 <merchant_type>II</merchant_type>
                 <payment_type>pay</payment_type>
+                <dev_mode>1</dev_mode>
+                <sand_box>1</sand_box>
+                <sand_box_prefix>tst_</sand_box_prefix>
+                <sand_box_store_id>4AAD1369CF734B64B70F</sand_box_store_id>
+                <sand_box_store_password>75bef16bfdce4d0e9c0ad5a19b9940df</sand_box_store_password>
             </instant_installment>
         </payment>
         <codecustom>
@@ -52,16 +62,16 @@
                 <order_status_after_hold_confirm>0</order_status_after_hold_confirm>
             </liqpay_payment>
             <parts_payment>
-                <api_url></api_url>
-                <checkout_url></checkout_url>
+                <api_url>https://payparts2.privatbank.ua/ipp/v2/payment/</api_url>
+                <checkout_url>https://payparts2.privatbank.ua/ipp/v2/payment?token=</checkout_url>
                 <confirm_url></confirm_url>
                 <check_status_url></check_status_url>
                 <hold_confirm_order_status>0</hold_confirm_order_status>
                 <order_status_after_hold_confirm>0</order_status_after_hold_confirm>
             </parts_payment>
             <instant_installment>
-                <api_url></api_url>
-                <checkout_url></checkout_url>
+                <api_url>https://payparts2.privatbank.ua/ipp/v2/payment/</api_url>
+                <checkout_url>https://payparts2.privatbank.ua/ipp/v2/payment?token=</checkout_url>
                 <confirm_url></confirm_url>
                 <check_status_url></check_status_url>
                 <hold_confirm_order_status>0</hold_confirm_order_status>
