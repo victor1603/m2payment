@@ -135,11 +135,7 @@ class PrivatBank extends PrivatBankSdk
         $loggerHelper = $this->getObjectManager('\CodeCustom\Payments\Helper\Logger');
         $logger = $loggerHelper->create('pp', self::LOGGER_DIRECTORY_PARTS_PAYMENT_CHECKOUT);
         $postData = $this->getPostData($order, $partsCount);
-        if (!empty($postData)) {
-            foreach ($postData as $k => $v) {
-                $logger->info('post DATA k: ' . $k . ' v: ' . $v);
-            }
-        }
+
         $logger->info('Try to send cURL to ' . $this->_helper->getApiUrl($paymentCode) .
             $this->_helper->getPaymentType($paymentCode) . ' with params:');
         $this->logPostData($logger, $postData);
