@@ -26,7 +26,7 @@
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>PP</merchant_type>
-                <payment_type>pay</payment_type>
+                <payment_type>create</payment_type>
                 <dev_mode>1</dev_mode>
                 <sand_box>1</sand_box>
                 <sand_box_prefix>tst_</sand_box_prefix>
@@ -44,7 +44,7 @@
                 <scheme></scheme>
                 <recipient_id></recipient_id>
                 <merchant_type>II</merchant_type>
-                <payment_type>pay</payment_type>
+                <payment_type>create</payment_type>
                 <dev_mode>1</dev_mode>
                 <sand_box>1</sand_box>
                 <sand_box_prefix>tst_</sand_box_prefix>

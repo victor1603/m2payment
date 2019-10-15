@@ -27,7 +27,7 @@ class PrivatBank extends PrivatBankSdk
     const STATUS_SANDBOX            = 'sandbox';
     const STATUS_PENDING            = 'pending';
 
-    const STANDART_PB_ACTION        = 'pay';
+    const STANDART_PB_ACTION        = 'create';
     const HOLD_PB_ACTION            = 'hold';
 
     const INVOICE_STATE_HOLD_WAIT      = 1;
@@ -481,7 +481,7 @@ class PrivatBank extends PrivatBankSdk
      * @return float|int
      */
     public function calcDiscount($item, $order){
-        if($item->getProductType()=="freegift"){
+        if($item->getProductType() == "freegift"){
             $finalPrice = $item->getBaseOriginalPrice();
         }else{
             $finalPrice = $this->getFreeGiftPrice($item, $order);
