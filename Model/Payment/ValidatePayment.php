@@ -47,12 +47,12 @@ class ValidatePayment implements ValidationInterface
             $quote = $this->getQuote($data['quote_id']);
             if(!empty($quote->getData())) {
                 $validationResult = $this->_validateHelperInstant->validatePlaceOrderData($data, $quote);
-                $result = $this->generateResult($validationResult);
+                $result = $this->generateResult($validationResult, 'Error in validation place order');
             }else {
-                $result = $this->generateResult( 1);
+                $result = $this->generateResult( 1, 'Quote data is empty');
             }
         }else {
-            $result = $this->generateResult(1);
+            $result = $this->generateResult(1, 'Error no quote ID or payment data or $data is empty');
         }
         return (string)$result;
     }
@@ -61,7 +61,7 @@ class ValidatePayment implements ValidationInterface
      * @param $data
      * @return array
      */
-    protected function generateResult($error = false)
+    protected function generateResult($error = false, $message = false)
     {
         if(!is_integer($error)) {
             $result = [
@@ -69,7 +69,9 @@ class ValidatePayment implements ValidationInterface
                 'message' => false
             ];
         }else {
-            $message = $this->_validateHelperInstant->getErrorStringByCode($error);
+            if (!$message) {
+                $message = $this->_validateHelperInstant->getErrorStringByCode($error);
+            }
             $result = [
                 'success' => false,
                 'message' => $message
