@@ -377,7 +377,7 @@ define(
                 let paymentData = self.getData();
                 let serviceUrl,payload;
                 let quote_data = quoteII.getItems();
-                let quote_id = quote_data[0].item_id;
+                let quote_id = quote_data[0].quote_id;
                 let data = {
                     'payment_data' : JSON.stringify(paymentData),
                     'quote_id' : quote_id,
