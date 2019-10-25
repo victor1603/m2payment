@@ -19,7 +19,7 @@ define(
         'Magento_Payment/js/model/credit-card-validation/validator'
     ],
     function (
-        Component, $, url, customerData, totals, placeOrder, storage, quote, urlBuilder, redirectOnSuccessAction,ko,$t
+        Component, $, url, customerData, totals, placeOrder, storage, quoteII, urlBuilder, redirectOnSuccessAction,ko,$t
     ) {
         'use strict';
 
@@ -43,8 +43,8 @@ define(
                                 }
                             }
                         }
-                        if (quote.paymentMethod()) {
-                            let method = quote.paymentMethod().method;
+                        if (quoteII.paymentMethod()) {
+                            let method = quoteII.paymentMethod().method;
                             if(
                                 method === 'parts_payment'
                                 ||
@@ -85,7 +85,7 @@ define(
                     $('[name="payment[ii_price]"]').val(price);
                 }
 
-                if(quote.paymentMethod() && quote.paymentMethod().method === 'instant_installment'){
+                if(quoteII.paymentMethod() && quoteII.paymentMethod().method === 'instant_installment'){
                     let cart = customerData.get('cart')();
 
                     var PP_CALCULATOR = (function () {
@@ -376,7 +376,8 @@ define(
                 let self = this;
                 let paymentData = self.getData();
                 let serviceUrl,payload;
-                let quote_id = quote.getQuoteId();
+                let quote_data = quoteII.getItems();
+                let quote_id = quote_data[0].item_id;
                 let data = {
                     'payment_data' : JSON.stringify(paymentData),
                     'quote_id' : quote_id,
