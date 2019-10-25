@@ -27,11 +27,13 @@ define(
                     name: 'CodeCustom_Payments/parts_payment/checkout',
                     afterRender: function (renderedNodesArray, data) {
                         let cart = customerData.get('cart')();
+                        var dataLoaded = false;
                         if(cart.has_part_payment) {
                             let termData = JSON.parse(cart.pp_term);
                             if(termData.user_defined && !cart.part_payment_message) {
                                 if(renderedNodesArray.length) {
                                     data.selectPaymentMethod();
+                                    dataLoaded = true;
                                     jQuery(this).removeClass('hide');
                                     jQuery(this).show();
                                 }
@@ -49,6 +51,9 @@ define(
                                     });
                                 }
                             }
+                        }
+                        if (!dataLoaded) {
+                            data.selectPaymentMethod();
                         }
                     }
                 }

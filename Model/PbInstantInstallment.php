@@ -190,7 +190,7 @@ class PbInstantInstallment extends AbstractMethod
             $address = $quote->getShippingAddress();
             if($address) {
                 $method = $address->getShippingMethod();
-                $availableMethods = $this->configHelper->getActiveMethods();
+                $availableMethods = $this->configHelper->getActiveMethods(self::METHOD_CODE);
                 if(is_array($availableMethods) && !empty($availableMethods)) {
                     return in_array($method, $availableMethods);
                 }
