@@ -55,9 +55,6 @@ class PrivatBank extends PrivatBankSdk
         $this->logger = $logger;
     }
 
-    /**
-     * @return \Perspective\ PartsPayment\Helper\Config
-     */
     public function getHelper()
     {
         return $this->_helper;

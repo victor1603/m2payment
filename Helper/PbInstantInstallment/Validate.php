@@ -201,19 +201,19 @@ class Validate extends AbstractHelper
                     }
                     if(array_key_exists('ii_price', $additionalData)) {
                         $grandTotal = (int)$quote->getGrandTotal();
-                        $limit = (int)$this->_methodHelper->getMinProductPrice();
-                        if($grandTotal < $limit) {
-                            return self::INCORRECT_PLACE_ORDER_DATA;
+                        $limit = (int)$this->_methodHelper->getMinProductPrice(PbInstantInstallment::METHOD_CODE);
+                        if($grandTotal < $limit && $limit != 0) {
+                            return __('Total price less that min price in settings');
                         }
                     }else {
                         return self::INCORRECT_PRICE;
                     }
                     return true;
                 }else{
-                    return self::INCORRECT_PLACE_ORDER_DATA;
+                    return __('No additional data found');
                 }
             }else {
-                return self::INCORRECT_PLACE_ORDER_DATA;
+                return __('No payment data found');
             }
         } catch (\Exception $e) {
             return false;
