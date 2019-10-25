@@ -30,10 +30,12 @@ define(
                     name: 'CodeCustom_Payments/instant_installment/checkout',
                     afterRender: function (renderedNodesArray, data) {
                         let cart = customerData.get('cart')();
+                        var dataLoaded = false;
                         if(cart.instant_installment.data) {
                             if(cart.instant_installment.data.ii_term && !cart.instant_installment.error) {
                                 if(renderedNodesArray.length) {
                                     data.selectPaymentMethod();
+                                    dataLoaded = true;
                                     jQuery('.payment-group-credit-container').each(function(){
                                         jQuery(this).removeClass('hide');
                                         jQuery(this).show();
@@ -53,6 +55,9 @@ define(
                                     jQuery(this).show();
                                 });
                             }
+                        }
+                        if (!dataLoaded) {
+                            data.selectPaymentMethod();
                         }
                     }
                 }
@@ -75,7 +80,7 @@ define(
             isCheckedPart: ko.computed(function () {
                 function updateFieldsData() {
                     let term = parseInt($('.payment_quick_credit .payment-method-content .payment_count-info').html());
-                    let price = parseInt($('.payment_quick_credit .payment-method-content .info-price-payment .price').attr('part-price'));
+                    let price = parseInt($('.payment_quick_credit .payment-method-content .pricing-half-part .price').attr('part-price'));
                     $('[name="payment[ii_term]"]').val(term);
                     $('[name="payment[ii_price]"]').val(price);
                 }
