@@ -92,18 +92,30 @@ class LiqPay extends LiqPaySdk
         return $signature == $generatedSignature;
     }
 
-    public function holdConfirm(\Magento\Sales\Model\Order $order)
+    public function holdConfirm(\Magento\Sales\Model\Order $order, $logger)
     {
         $result = null;
         if ($order && $order->getId()) {
-            $result = $this->api('request',
+            $params =
                 [
                     'action'        => $this->_liqPayConfig->getHoldAction(),
                     'version'       => $this->_liqPayConfig->getVersion(),
                     'amount'        => $order->getGrandTotal(),
                     'order_id'      => $this->_liqPayConfig->getBankOrderId($order->getIncrementId())
-                ]);
+                ];
+            $logger->info('Send api request with params:');
+            foreach ($params as $k => $v) {
+                $logger->info('key: ' . $k . ' $value: ' . $v);
+            }
+            $result = $this->api('request',$params);
+            $logger->info('Api response:');
+            if ($result && !is_null($result)) {
+                foreach ($result as $k => $v) {
+                    $logger->info('key: ' . $k . ' value: ' . $v);
+                }
+            }
         }
+
         return $result;
     }
 }
