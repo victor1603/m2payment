@@ -78,7 +78,7 @@ class Scheduler
             PbInstantInstallment::METHOD_CODE => $this->privatBankConfig->getConfirmHoldStatus(PbInstantInstallment::METHOD_CODE)
         ];
         $orderCollection = $this->order->getOrdersByPaymentAndStatus($filterData);
-        $logger = $this->logger->create('cron_payment_log', 'test_cron_pp_ii_lq');
+        $logger = $this->logger->create('cron_payment_log', 'cron_check');
         $logger->info('Get product collection');
         if ($orderCollection && $orderCollection->getSize()) {
             $logger->info('Get product collection size = ' . $orderCollection->getSize());
@@ -87,7 +87,7 @@ class Scheduler
                     $logger->info('Working with order: ' . $order->getIncrementId() . ' method: ' . $order->getPayment()->getMethod());
                     switch ($order->getPayment()->getMethod()) {
                         case LiqPay::METHOD_CODE:
-                            $this->liqPaySdk->holdConfirm($order);
+                            $this->liqPaySdk->holdConfirm($order, $logger);
                             break;
                         case PbPartsPayment::METHOD_CODE:
                         case PbInstantInstallment::METHOD_CODE:

@@ -63,6 +63,9 @@ class PrivatBankCallBack implements PrivatBankCallBackInterface
      */
     protected $loggerHelper;
 
+    /**
+     * @var Worker
+     */
     protected $_worker;
 
 
@@ -130,7 +133,7 @@ class PrivatBankCallBack implements PrivatBankCallBackInterface
                 $historyMessage = [];
                 $state = null;
                 $invoice = [];
-                $logger = $this->loggerHelper->create('callback_parts_payment', 'test');
+                $logger = $this->loggerHelper->create('callback_parts_payment', 'pb_callback');
                 if ($decodeData) {
                     $logger->info('Decoded data in Callback: ');
                     foreach ($decodeData as $k => $v) {

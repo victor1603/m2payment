@@ -19,7 +19,7 @@ define(
         'Magento_Payment/js/model/credit-card-validation/validator'
     ],
     function (
-        Component, $, url, customerData, totals, placeOrder, storage, quote, urlBuilder, redirectOnSuccessAction,ko,$t
+        Component, $, url, customerData, totals, placeOrder, storage, quoteII, urlBuilder, redirectOnSuccessAction,ko,$t
     ) {
         'use strict';
 
@@ -30,10 +30,12 @@ define(
                     name: 'CodeCustom_Payments/instant_installment/checkout',
                     afterRender: function (renderedNodesArray, data) {
                         let cart = customerData.get('cart')();
+                        var dataLoaded = false;
                         if(cart.instant_installment.data) {
                             if(cart.instant_installment.data.ii_term && !cart.instant_installment.error) {
                                 if(renderedNodesArray.length) {
                                     data.selectPaymentMethod();
+                                    dataLoaded = true;
                                     jQuery('.payment-group-credit-container').each(function(){
                                         jQuery(this).removeClass('hide');
                                         jQuery(this).show();
@@ -41,8 +43,8 @@ define(
                                 }
                             }
                         }
-                        if (quote.paymentMethod()) {
-                            let method = quote.paymentMethod().method;
+                        if (quoteII.paymentMethod()) {
+                            let method = quoteII.paymentMethod().method;
                             if(
                                 method === 'parts_payment'
                                 ||
@@ -53,6 +55,9 @@ define(
                                     jQuery(this).show();
                                 });
                             }
+                        }
+                        if (!dataLoaded) {
+                            data.selectPaymentMethod();
                         }
                     }
                 }
@@ -75,12 +80,12 @@ define(
             isCheckedPart: ko.computed(function () {
                 function updateFieldsData() {
                     let term = parseInt($('.payment_quick_credit .payment-method-content .payment_count-info').html());
-                    let price = parseInt($('.payment_quick_credit .payment-method-content .info-price-payment .price').attr('part-price'));
+                    let price = parseInt($('.payment_quick_credit .payment-method-content .pricing-half-part .price').attr('part-price'));
                     $('[name="payment[ii_term]"]').val(term);
                     $('[name="payment[ii_price]"]').val(price);
                 }
 
-                if(quote.paymentMethod() && quote.paymentMethod().method === 'instant_installment'){
+                if(quoteII.paymentMethod() && quoteII.paymentMethod().method === 'instant_installment'){
                     let cart = customerData.get('cart')();
 
                     var PP_CALCULATOR = (function () {
@@ -371,7 +376,8 @@ define(
                 let self = this;
                 let paymentData = self.getData();
                 let serviceUrl,payload;
-                let quote_id = quote.getQuoteId();
+                let quote_data = quoteII.getItems();
+                let quote_id = quote_data[0].quote_id;
                 let data = {
                     'payment_data' : JSON.stringify(paymentData),
                     'quote_id' : quote_id,

@@ -12,6 +12,7 @@ use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use Magento\Framework\App\RequestInterface;
 use Magento\Sales\Model\Order\Invoice;
 use CodeCustom\Payments\Model\CallBack\LipPayCallBack\Worker;
+use CodeCustom\Payments\Helper\Logger;
 
 class LiqPayCallBack implements LiqPayCallBackInterface
 {
@@ -32,6 +33,8 @@ class LiqPayCallBack implements LiqPayCallBackInterface
 
     protected $_invoice;
 
+    protected $_loggerHelper;
+
     protected $_worker;
 
     public function __construct(
@@ -43,7 +46,8 @@ class LiqPayCallBack implements LiqPayCallBackInterface
         LiqPay $liqPay,
         RequestInterface $request,
         Invoice $invoice,
-        Worker $worker
+        Worker $worker,
+        Logger $_loggerHelper
     )
     {
         $this->_order = $order;
@@ -55,6 +59,7 @@ class LiqPayCallBack implements LiqPayCallBackInterface
         $this->_request = $request;
         $this->_invoice = $invoice;
         $this->_worker = $worker;
+        $this->_loggerHelper = $_loggerHelper;
     }
 
     public function callback()
@@ -81,6 +86,13 @@ class LiqPayCallBack implements LiqPayCallBackInterface
                 $order->addStatusHistoryComment(__('LiqPay security check failed!'));
                 $this->_orderRepository->save($order);
                 return null;
+            }
+            $logger = $this->_loggerHelper->create('callback_liqpay', 'lq_callback');
+            if ($decodedData && !empty($decodedData)) {
+                $logger->info('Decoded data in Callback: ');
+                foreach ($decodedData as $key => $value) {
+                    $logger->info('key: ' . $key . ' value: ' . $value);
+                }
             }
             /**
              * execute the worker class
