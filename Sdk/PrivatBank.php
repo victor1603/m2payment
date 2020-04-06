@@ -320,7 +320,7 @@ class PrivatBank extends PrivatBankSdk
                 $result [] = [
                     'name' => (string)$item->getSku(),
                     'count' => (int)$item->getQtyOrdered(),
-                    'price' => (int)$this->calcDiscount($item, $order) //(int)$item->getPrice()
+                    'price' => (float)$this->calcDiscount($item, $order) //(int)$item->getPrice()
                 ];
             }
         }
@@ -333,7 +333,7 @@ class PrivatBank extends PrivatBankSdk
      */
     protected function getShipmentAmountBlock($order)
     {
-        $price = (int)$order->getData('shipping_amount') ? (int)$order->getData('shipping_amount') : '';
+        $price = (float)$order->getData('shipping_amount') ? (float)$order->getData('shipping_amount') : '';
         if ($price) {
             return ['name' => 'shipping', 'count' => 1, 'price' => $price];
         }
