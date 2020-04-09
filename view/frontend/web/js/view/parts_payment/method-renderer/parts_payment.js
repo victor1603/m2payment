@@ -70,6 +70,9 @@ define(
                         function privParseInt(num) {
                             return parseInt(num, 10)
                         }
+                        function privParseFloat(num) {
+                            return parseFloat(num)
+                        }
                         function getValByTerm(term) {
                             var commissions = {
                                 1: 0.015,
@@ -131,7 +134,7 @@ define(
                         my.calculatePhys = function (paymentsCount, price) {
                             if (isNaN(paymentsCount) || isNaN(price)) return;
                             paymentsCount = privParseInt(paymentsCount) + 1;
-                            price = privParseInt(price);
+                            price = privParseFloat(price);
                             var ip = price / paymentsCount + price * (commissions.ipCommission / 100);
                             var pp = price / paymentsCount;
                             var ipa = (price / paymentsCount) + (price * 0.99 / 100);
@@ -145,7 +148,7 @@ define(
                         my.calculateJur = function (paymentsCount, price) {
                             if (isNaN(paymentsCount) || isNaN(price)) return;
                             paymentsCount = privParseInt(paymentsCount) + 1;
-                            price = privParseInt(price);
+                            price = privParseFloat(price);
                             var tabVal = getValByTerm(paymentsCount - 1);
                             var stpp = price * (1 - (tabVal + commissions.acqCommission));
                             var ipaTabVal = ipagetValByTerm(paymentsCount - 1);
