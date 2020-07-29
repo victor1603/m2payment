@@ -210,7 +210,7 @@
         </tab>
         <section id="codecustom" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
-            <label>Payments custom options</label>
+            <label>Custom Payment options</label>
             <tab>codecustom_tab</tab>
             <resource>CodeCustom_Payments::config</resource>
             <group id="liqpay_payment" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
