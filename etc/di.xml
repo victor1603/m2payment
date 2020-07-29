@@ -22,6 +22,13 @@
                 disabled="false"/>
     </type>
 
+    <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
+        <plugin name="PlaceOrderResolver"
+                type="CodeCustom\Payments\Plugin\Resolver\PlaceOrder"
+                sortOrder="16"
+                disabled="false"/>
+    </type>
+
     <type name="Magento\Framework\Webapi\Rest\Request\DeserializerFactory">
         <arguments>
             <argument name="deserializers" xsi:type="array">

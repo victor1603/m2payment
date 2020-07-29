@@ -128,6 +128,16 @@ class LiqPaySdk
         );
     }
 
+    public function getCnbUrl($params)
+    {
+        $params    = $this->cnb_params($params);
+        $data      = $this->encode_params($params);
+        $signature = $this->cnb_signature($params);
+
+        return $this->_checkout_url .
+            '?data=' . $data . '&signature=' . $signature;
+    }
+
     /**
      * cnb_signature
      *

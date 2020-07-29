@@ -58,6 +58,12 @@ class LiqPay extends LiqPaySdk
         return $params;
     }
 
+    public function getRedirectUrl($params)
+    {
+        $params = $this->prepareParams($params);
+        return $this->getCnbUrl($params);
+    }
+
     public function getHelper()
     {
         return $this->_liqPayConfig;
