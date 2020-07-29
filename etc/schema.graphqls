@@ -1,0 +1,29 @@
+directive @doc(description: String="") on QUERY
+    | MUTATION
+    | FIELD
+    | FRAGMENT_DEFINITION
+    | FRAGMENT_SPREAD
+    | INLINE_FRAGMENT
+    | SCHEMA
+    | SCALAR
+    | OBJECT
+    | FIELD_DEFINITION
+    | ARGUMENT_DEFINITION
+    | INTERFACE
+    | UNION
+    | ENUM
+    | ENUM_VALUE
+    | INPUT_OBJECT
+    | INPUT_FIELD_DEFINITION
+directive @resolver(class: String) on FIELD_DEFINITION
+directive @cache(cacheable: Boolean) on FIELD_DEFINITION
+
+
+
+type Order {
+    payment_extension_data: paymentData
+}
+
+type paymentData {
+    redirect_url: String
+}
