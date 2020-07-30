@@ -70,15 +70,15 @@ class PlaceOrder
             throw new GraphQlInputException(__("Order not created"));
         }
 
-        $orderId = $resolvedValue['order']['order_number'];
-
         try {
+            $orderId = $resolvedValue['order']['order_number'];
             $order = $this->orderModel->loadByIncrementId($orderId);
             $url = $this->liqpayPaymentLogic($order);
             $resolvedValue['order']['payment_extension_data']['redirect_url'] = $url;
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
         }
+
         return $resolvedValue;
     }
 
@@ -92,7 +92,6 @@ class PlaceOrder
         }
 
         if ($this->liqpayHelper->checkOrderIsLiqPayPayment($order)) {
-
             $url = $this->liqpaySdk->getRedirectUrl(
                 [
                     'action' => $this->liqpayHelper->getPaymentType(),
@@ -102,7 +101,6 @@ class PlaceOrder
                     'order_id' => $order->getIncrementId(),
                 ]
             );
-
         } else {
             $url = null;
         }
