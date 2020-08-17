@@ -26,4 +26,5 @@ type Order {
 
 type paymentData {
     redirect_url: String
+    payment_method: String
 }

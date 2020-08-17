@@ -15,7 +15,7 @@ class LiqPay extends AbstractMethod
     protected $_canCapture = true;
     protected $_canVoid = true;
     protected $_canUseForMultishipping = false;
-    protected $_canUseInternal = true; //changed to true in order to VOD-289
+    protected $_canUseInternal = true;
     protected $_isInitializeNeeded = true;
     protected $_isGateway = true;
     protected $_canAuthorize = false;
