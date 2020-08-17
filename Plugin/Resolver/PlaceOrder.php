@@ -9,6 +9,7 @@ use Magento\QuoteGraphQl\Model\Resolver\PlaceOrder as PlaseOrderResolve;
 use Magento\Sales\Model\Order;
 use CodeCustom\Payments\Helper\Config\LiqPayConfig;
 use CodeCustom\Payments\Sdk\LiqPay;
+use CodeCustom\Payments\Model\LiqPay as LiqPayModel;
 
 class PlaceOrder
 {
@@ -73,8 +74,11 @@ class PlaceOrder
         try {
             $orderId = $resolvedValue['order']['order_number'];
             $order = $this->orderModel->loadByIncrementId($orderId);
-            $url = $this->liqpayPaymentLogic($order);
-            $resolvedValue['order']['payment_extension_data']['redirect_url'] = $url;
+            if ($order && $order->getPayment()->getMethod() == LiqPayModel::METHOD_CODE) {
+                $url = $this->liqpayPaymentLogic($order);
+                $resolvedValue['order']['payment_extension_data']['redirect_url'] = $url;
+                $resolvedValue['order']['payment_extension_data']['payment_method'] = $order->getPayment()->getMethod();
+            }
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
         }
